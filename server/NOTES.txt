@@ -1,10 +1,10 @@
 dev-dependencies
 --
-yarn add prisma ts-node typescript @types/node -D
+yarn add prisma ts-node-dev pino-pretty typescript @types/node @types/jsonwebtoken @types/config -D
 
 dependencies
 --
-yarn add @prisma/client
+yarn add @prisma/client pino argon2 config jsonwebtoken
 
 tsconfig.json
 --
