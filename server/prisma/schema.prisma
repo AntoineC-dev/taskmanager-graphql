@@ -13,6 +13,8 @@ generator client {
 
 model User {
   id              String      @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
   username        String
   email           String      @unique
   password        String
@@ -22,6 +24,8 @@ model User {
 
 model Session {
   id              String      @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
   userAgent       String
   valid           Boolean     @default(true)
   user            User        @relation(fields: [userId], references: [id])
@@ -30,6 +34,8 @@ model Session {
 
 model Task {
   id              String      @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
   title           String
   description     String
   completed       Boolean     @default(false)
