@@ -21,7 +21,9 @@
     "@prisma/client": "^3.9.2",
     "argon2": "^0.28.4",
     "config": "^3.3.7",
+    "graphql": "15.7.2",
     "jsonwebtoken": "^8.5.1",
+    "nexus": "^1.2.0",
     "pino": "^7.8.0"
   }
 }
