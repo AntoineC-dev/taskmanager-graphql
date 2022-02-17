@@ -1,0 +1,21 @@
+dev-dependencies
+--
+yarn add prisma ts-node typescript @types/node -D
+
+dependencies
+--
+yarn add @prisma/client
+
+tsconfig.json
+--
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "lib": [
+      "esnext"
+    ],
+    "esModuleInterop": true
+  }
+}
