@@ -4,7 +4,7 @@
 This is a personnal project for my protfolio
 Feel free to share any suggestion to improve the code
 
-## Technologies used in this project
+## Technologies used for this project
 
 - Typescript (Type-safe javascript superset)
 - MongoDb Atlas (Database)
