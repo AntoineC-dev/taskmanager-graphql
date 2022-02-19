@@ -121,12 +121,13 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createTask: NexusGenRootTypes['Task']; // Task!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    logout: string; // String!
     register: NexusGenRootTypes['User']; // User!
+    verify: string; // String!
   }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
-    verify: string; // String!
   }
   Session: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -165,12 +166,13 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createTask: 'Task'
     login: 'AuthPayload'
+    logout: 'String'
     register: 'User'
+    verify: 'String'
   }
   Query: { // field return type name
     me: 'User'
     users: 'User'
-    verify: 'String'
   }
   Session: { // field return type name
     createdAt: 'DateTime'
@@ -215,8 +217,6 @@ export interface NexusGenArgTypes {
       password: NexusGenScalars['Password']; // Password!
       username: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     }
-  }
-  Query: {
     verify: { // args
       id: string; // String!
       verificationCode: string; // String!

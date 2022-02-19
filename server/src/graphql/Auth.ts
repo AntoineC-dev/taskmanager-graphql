@@ -12,29 +12,6 @@ export const AuthPayloadModel = objectType({
   },
 });
 
-export const AuthQuery = extendType({
-  type: "Query",
-  definition(t) {
-    t.nonNull.field("verify", {
-      type: "String",
-      args: {
-        id: nonNull(stringArg()),
-        verificationCode: nonNull(stringArg()),
-      },
-      async resolve(parent, args, ctx) {
-        const { id, verificationCode } = args;
-        const errorMessage = "Could not verify your account";
-        const user = await ctx.prisma.user.findUnique({ where: { id } });
-        if (!user || user.verificationCode !== verificationCode) {
-          throw new Error(errorMessage);
-        }
-        await ctx.prisma.user.update({ where: { id }, data: { verified: true } });
-        return "Account successfully verified";
-      },
-    });
-  },
-});
-
 export const AuthMutation = extendType({
   type: "Mutation",
   definition(t) {
@@ -61,6 +38,23 @@ export const AuthMutation = extendType({
         });
         sendVerificationEmail(user);
         return user;
+      },
+    });
+    t.nonNull.field("verify", {
+      type: "String",
+      args: {
+        id: nonNull(stringArg()),
+        verificationCode: nonNull(stringArg()),
+      },
+      async resolve(parent, args, ctx) {
+        const { id, verificationCode } = args;
+        const errorMessage = "Could not verify your account";
+        const user = await ctx.prisma.user.findUnique({ where: { id } });
+        if (!user || user.verified || user.verificationCode !== verificationCode) {
+          throw new Error(errorMessage);
+        }
+        await ctx.prisma.user.update({ where: { id }, data: { verified: true } });
+        return "Account successfully verified";
       },
     });
     t.nonNull.field("login", {
@@ -94,6 +88,17 @@ export const AuthMutation = extendType({
         });
         const { accessToken, refreshToken } = signTokens({ userId: user.id, sessionId: session.id });
         return { accessToken, refreshToken, user };
+      },
+    });
+    t.nonNull.field("logout", {
+      type: "String",
+      async resolve(_, __, ctx) {
+        if (!ctx.decoded) {
+          throw new Error("Forbidden. You must be logged in");
+        }
+        const { sessionId } = ctx.decoded;
+        await ctx.prisma.session.update({ where: { id: sessionId }, data: { valid: false } });
+        return "Successfully logged out";
       },
     });
   },
