@@ -38,7 +38,7 @@ export function sendVerificationEmail(user: User) {
       from: `Graphql TaskManager<${smtp.from}>`,
       to: email,
       subject: "Please verify your account",
-      text: `id:${id} -- verificationCode:${verificationCode}`,
+      text: `http://localhost:3001/graphql?query={verify(id:${id},verificationCode:${verificationCode})}`,
     },
     (error, _) => {
       if (error) {
