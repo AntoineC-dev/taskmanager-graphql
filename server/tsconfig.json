@@ -5,6 +5,7 @@
     "lib": [
       "esnext"
     ],
+    "rootDir": ".",
     "outDir": "dist",
     "sourceMap": true,
     "strict": true,
