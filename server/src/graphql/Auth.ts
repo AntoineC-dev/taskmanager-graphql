@@ -16,7 +16,7 @@ export const AuthQuery = extendType({
   type: "Query",
   definition(t) {
     t.nonNull.field("verify", {
-      type: "Boolean",
+      type: "String",
       args: {
         id: nonNull(stringArg()),
         verificationCode: nonNull(stringArg()),
@@ -29,7 +29,7 @@ export const AuthQuery = extendType({
           throw new Error(errorMessage);
         }
         await ctx.prisma.user.update({ where: { id }, data: { verified: true } });
-        return true;
+        return "Account successfully verified";
       },
     });
   },
@@ -67,7 +67,7 @@ export const AuthMutation = extendType({
       type: "AuthPayload",
       args: {
         email: nonNull("EmailAddress"),
-        password: nonNull("Password"),
+        password: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
         const { email, password } = args;

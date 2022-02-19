@@ -20,7 +20,7 @@ scalar EmailAddress
 
 type Mutation {
   createTask(description: String, title: NonEmptyString!): Task!
-  login(email: EmailAddress!, password: Password!): AuthPayload!
+  login(email: EmailAddress!, password: String!): AuthPayload!
   register(email: EmailAddress!, password: Password!, username: NonEmptyString!): User!
 }
 
@@ -35,7 +35,7 @@ scalar Password
 type Query {
   me: User!
   users: [User]!
-  verify(id: String!, verificationCode: String!): Boolean!
+  verify(id: String!, verificationCode: String!): String!
 }
 
 type Session {
