@@ -18,6 +18,7 @@ model User {
   username         String
   email            String    @unique
   password         String
+  verified         Boolean   @default(false)
   verificationCode String    @default(uuid())
   sessions         Session[] @relation("SessionUser")
   tasks            Task[]    @relation("TaskUser")
