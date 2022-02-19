@@ -1,5 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
-import { comparePwd, hashPwd, signTokens } from "../utils";
+import { comparePwd, hashPwd, sendVerificationEmail, signTokens } from "../utils";
 
 export const AuthPayloadModel = objectType({
   name: "AuthPayload",
@@ -38,7 +38,7 @@ export const AuthMutation = extendType({
   type: "Mutation",
   definition(t) {
     t.nonNull.field("register", {
-      type: "AuthPayload",
+      type: "User",
       args: {
         username: nonNull("NonEmptyString"),
         email: nonNull("EmailAddress"),
@@ -58,14 +58,8 @@ export const AuthMutation = extendType({
             password: hash,
           },
         });
-        const session = await ctx.prisma.session.create({
-          data: {
-            userAgent: ctx.userAgent ?? "",
-            userId: user.id,
-          },
-        });
-        const { accessToken, refreshToken } = signTokens({ userId: user.id, sessionId: session.id });
-        return { accessToken, refreshToken, user };
+        sendVerificationEmail(user);
+        return user;
       },
     });
     t.nonNull.field("login", {
@@ -83,6 +77,9 @@ export const AuthMutation = extendType({
         const user = await ctx.prisma.user.findUnique({ where: { email } });
         if (!user) {
           throw new Error(errorMessage);
+        }
+        if (!user.verified) {
+          throw new Error("Please verify your email");
         }
         const valid = await comparePwd(user.password, password);
         if (!valid) {

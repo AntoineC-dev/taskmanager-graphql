@@ -121,7 +121,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createTask: NexusGenRootTypes['Task']; // Task!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    register: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    register: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
@@ -165,7 +165,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createTask: 'Task'
     login: 'AuthPayload'
-    register: 'AuthPayload'
+    register: 'User'
   }
   Query: { // field return type name
     me: 'User'
