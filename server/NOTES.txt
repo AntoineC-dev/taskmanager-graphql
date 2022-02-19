@@ -4,7 +4,7 @@ yarn add prisma ts-node-dev pino-pretty typescript @types/node @types/jsonwebtok
 
 dependencies
 --
-yarn add @prisma/client pino argon2 config jsonwebtoken nexus graphql@15.7.2
+yarn add @prisma/client pino dayjs argon2 config dotenv jsonwebtoken nexus graphql@15.7.2 graphql-scalars apollo-server 
 
 tsconfig.json
 --
