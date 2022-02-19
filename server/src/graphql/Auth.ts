@@ -1,4 +1,4 @@
-import { extendType, nonNull, objectType } from "nexus";
+import { extendType, nonNull, objectType, stringArg } from "nexus";
 import { comparePwd, hashPwd, signTokens } from "../utils";
 
 export const AuthPayloadModel = objectType({
@@ -8,6 +8,28 @@ export const AuthPayloadModel = objectType({
     t.nonNull.string("refreshToken");
     t.nonNull.field("user", {
       type: "User",
+    });
+  },
+});
+
+export const AuthQuery = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.field("verify", {
+      type: "Boolean",
+      args: {
+        id: nonNull(stringArg()),
+        verificationCode: nonNull(stringArg()),
+      },
+      async resolve(parent, args, ctx) {
+        const { id, verificationCode } = args;
+        const errorMessage = "Could not verify your account";
+        const user = await ctx.prisma.user.findUnique({ where: { id } });
+        if (!user || user.verificationCode !== verificationCode) {
+          throw new Error(errorMessage);
+        }
+        return true;
+      },
     });
   },
 });
