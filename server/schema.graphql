@@ -35,6 +35,7 @@ scalar Password
 type Query {
   me: User!
   users: [User]!
+  verify(id: String!, verificationCode: String!): Boolean!
 }
 
 type Session {

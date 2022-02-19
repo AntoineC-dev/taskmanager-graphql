@@ -12,14 +12,15 @@ generator client {
 }
 
 model User {
-  id        String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  username  String
-  email     String    @unique
-  password  String
-  sessions  Session[] @relation("SessionUser")
-  tasks     Task[]    @relation("TaskUser")
+  id               String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  username         String
+  email            String    @unique
+  password         String
+  verificationCode String    @default(uuid())
+  sessions         Session[] @relation("SessionUser")
+  tasks            Task[]    @relation("TaskUser")
 }
 
 model Session {

@@ -126,6 +126,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    verify: boolean; // Boolean!
   }
   Session: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -169,6 +170,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     me: 'User'
     users: 'User'
+    verify: 'Boolean'
   }
   Session: { // field return type name
     createdAt: 'DateTime'
@@ -212,6 +214,12 @@ export interface NexusGenArgTypes {
       email: NexusGenScalars['EmailAddress']; // EmailAddress!
       password: NexusGenScalars['Password']; // Password!
       username: NexusGenScalars['NonEmptyString']; // NonEmptyString!
+    }
+  }
+  Query: {
+    verify: { // args
+      id: string; // String!
+      verificationCode: string; // String!
     }
   }
 }
