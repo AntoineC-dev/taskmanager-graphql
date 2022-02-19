@@ -28,6 +28,7 @@ export const AuthQuery = extendType({
         if (!user || user.verificationCode !== verificationCode) {
           throw new Error(errorMessage);
         }
+        await ctx.prisma.user.update({ where: { id }, data: { verified: true } });
         return true;
       },
     });
