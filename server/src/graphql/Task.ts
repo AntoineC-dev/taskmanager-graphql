@@ -44,5 +44,36 @@ export const TaskMutation = extendType({
         });
       },
     });
+    t.nonNull.field("updateTask", {
+      type: "Task",
+      args: {
+        id: nonNull(stringArg()),
+        title: stringArg(),
+        description: stringArg(),
+      },
+      resolve(_, args, ctx) {
+        if (!ctx.decoded) {
+          throw new Error("Forbidden. You must be logged in");
+        }
+        const { id, description, title } = args;
+        return ctx.prisma.task.update({
+          where: { id },
+          data: {
+            title: title ?? undefined,
+            description: description ?? undefined,
+          },
+        });
+      },
+    });
+    t.nonNull.field("deleteTask", {
+      type: "Task",
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve(_, args, ctx) {
+        const { id } = args;
+        return ctx.prisma.task.delete({ where: { id } });
+      },
+    });
   },
 });

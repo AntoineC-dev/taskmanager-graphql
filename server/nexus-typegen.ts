@@ -120,9 +120,11 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createTask: NexusGenRootTypes['Task']; // Task!
+    deleteTask: NexusGenRootTypes['Task']; // Task!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     logout: string; // String!
     register: NexusGenRootTypes['User']; // User!
+    updateTask: NexusGenRootTypes['Task']; // Task!
     verify: string; // String!
   }
   Query: { // field return type
@@ -165,9 +167,11 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createTask: 'Task'
+    deleteTask: 'Task'
     login: 'AuthPayload'
     logout: 'String'
     register: 'User'
+    updateTask: 'Task'
     verify: 'String'
   }
   Query: { // field return type name
@@ -208,6 +212,9 @@ export interface NexusGenArgTypes {
       description?: string | null; // String
       title: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     }
+    deleteTask: { // args
+      id: string; // String!
+    }
     login: { // args
       email: NexusGenScalars['EmailAddress']; // EmailAddress!
       password: string; // String!
@@ -216,6 +223,11 @@ export interface NexusGenArgTypes {
       email: NexusGenScalars['EmailAddress']; // EmailAddress!
       password: NexusGenScalars['Password']; // Password!
       username: NexusGenScalars['NonEmptyString']; // NonEmptyString!
+    }
+    updateTask: { // args
+      description?: string | null; // String
+      id: string; // String!
+      title?: string | null; // String
     }
     verify: { // args
       id: string; // String!

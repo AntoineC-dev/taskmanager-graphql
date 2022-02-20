@@ -20,9 +20,11 @@ scalar EmailAddress
 
 type Mutation {
   createTask(description: String, title: NonEmptyString!): Task!
+  deleteTask(id: String!): Task!
   login(email: EmailAddress!, password: String!): AuthPayload!
   logout: String!
   register(email: EmailAddress!, password: Password!, username: NonEmptyString!): User!
+  updateTask(description: String, id: String!, title: String): Task!
   verify(id: String!, verificationCode: String!): String!
 }
 
