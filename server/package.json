@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsnd --respawn --transpile-only --exit-child src/server.ts",
-    "generate": "ts-node --transpile-only src/schema.ts",
+    "format": "npx prisma format",
+    "generate": "npx prisma generate",
+    "push": "npx prisma db push",
     "test-script": "ts-node src/script.ts"
   },
   "devDependencies": {
