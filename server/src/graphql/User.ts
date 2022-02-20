@@ -43,5 +43,16 @@ export const UserQuery = extendType({
         return user;
       },
     });
+    t.nonNull.field("clearTasks", {
+      type: "String",
+      async resolve(_, __, ctx) {
+        if (!ctx.decoded) {
+          throw new Error("Forbidden. You must be logged in");
+        }
+        const { userId } = ctx.decoded;
+        await ctx.prisma.task.deleteMany({ where: { userId } });
+        return "All tasks deleted";
+      },
+    });
   },
 });

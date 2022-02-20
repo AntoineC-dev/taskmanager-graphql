@@ -37,6 +37,7 @@ A field whose value matches /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za
 scalar Password
 
 type Query {
+  clearTasks: String!
   me: User!
   users: [User]!
 }

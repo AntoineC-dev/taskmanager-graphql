@@ -31,10 +31,10 @@ export const TaskMutation = extendType({
       },
       resolve(_, args, ctx) {
         const { title, description } = args;
-        const userId = ctx.decoded?.userId;
-        if (!userId) {
+        if (!ctx.decoded) {
           throw new Error("Forbidden. You must be logged in");
         }
+        const { userId } = ctx.decoded;
         return ctx.prisma.task.create({
           data: {
             title,
@@ -71,6 +71,9 @@ export const TaskMutation = extendType({
         id: nonNull(stringArg()),
       },
       resolve(_, args, ctx) {
+        if (!ctx.decoded) {
+          throw new Error("Forbidden. You must be logged in");
+        }
         const { id } = args;
         return ctx.prisma.task.delete({ where: { id } });
       },

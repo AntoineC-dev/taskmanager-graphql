@@ -128,6 +128,7 @@ export interface NexusGenFieldTypes {
     verify: string; // String!
   }
   Query: { // field return type
+    clearTasks: string; // String!
     me: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
@@ -175,6 +176,7 @@ export interface NexusGenFieldTypeNames {
     verify: 'String'
   }
   Query: { // field return type name
+    clearTasks: 'String'
     me: 'User'
     users: 'User'
   }
