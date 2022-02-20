@@ -12,3 +12,4 @@ Feel free to share any suggestion to improve the code
 - Apollo Server
 - Graphql
 - Nexus (Graphql type-safe Schema builder)
+- JsonWebToken (Token based authentication)
