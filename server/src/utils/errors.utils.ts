@@ -2,9 +2,12 @@ import { Context } from "../context";
 import { comparePwd } from "./pwd.utils";
 import { User } from "@prisma/client";
 
-export function checkAuthenticated(ctx: Context) {
-  if (!ctx.decoded) {
+export function checkAuthenticated(ctx: Context, option?: "shouldBe" | "shouldNotBe") {
+  if (option === "shouldBe" && !ctx.decoded) {
     throw new Error("Forbidden! This request requires authentication");
+  }
+  if (option === "shouldNotBe" && ctx.decoded) {
+    throw new Error("Already logged in");
   }
   return ctx.decoded;
 }
