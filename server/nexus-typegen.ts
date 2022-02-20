@@ -78,13 +78,6 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
-  Session: { // root type
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id: string; // String!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    userAgent: string; // String!
-    valid: boolean; // Boolean!
-  }
   Task: { // root type
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -92,6 +85,10 @@ export interface NexusGenObjects {
     id: string; // String!
     title: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  UpdateUserPayload: { // root type
+    message: string; // String!
+    user?: NexusGenRootTypes['User'] | null; // User
   }
   User: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -119,29 +116,22 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Mutation: { // field return type
-    clearSessions: string; // String!
     createTask: NexusGenRootTypes['Task']; // Task!
     deleteAllTasks: string; // String!
     deleteTask: NexusGenRootTypes['Task']; // Task!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     logout: string; // String!
+    logoutEverywhere: string; // String!
     register: NexusGenRootTypes['User']; // User!
     resetPassword: string; // String!
     updateTask: NexusGenRootTypes['Task']; // Task!
+    updateUser: NexusGenRootTypes['UpdateUserPayload']; // UpdateUserPayload!
     verify: string; // String!
   }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
     sendPasswordResetCodeEmail: string; // String!
     sendVerificationEmail: string; // String!
-  }
-  Session: { // field return type
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id: string; // String!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    user: NexusGenRootTypes['User']; // User!
-    userAgent: string; // String!
-    valid: boolean; // Boolean!
   }
   Task: { // field return type
     completed: boolean; // Boolean!
@@ -151,6 +141,10 @@ export interface NexusGenFieldTypes {
     title: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     user: NexusGenRootTypes['User']; // User!
+  }
+  UpdateUserPayload: { // field return type
+    message: string; // String!
+    user: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -169,29 +163,22 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Mutation: { // field return type name
-    clearSessions: 'String'
     createTask: 'Task'
     deleteAllTasks: 'String'
     deleteTask: 'Task'
     login: 'AuthPayload'
     logout: 'String'
+    logoutEverywhere: 'String'
     register: 'User'
     resetPassword: 'String'
     updateTask: 'Task'
+    updateUser: 'UpdateUserPayload'
     verify: 'String'
   }
   Query: { // field return type name
     me: 'User'
     sendPasswordResetCodeEmail: 'String'
     sendVerificationEmail: 'String'
-  }
-  Session: { // field return type name
-    createdAt: 'DateTime'
-    id: 'String'
-    updatedAt: 'DateTime'
-    user: 'User'
-    userAgent: 'String'
-    valid: 'Boolean'
   }
   Task: { // field return type name
     completed: 'Boolean'
@@ -200,6 +187,10 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     title: 'NonEmptyString'
     updatedAt: 'DateTime'
+    user: 'User'
+  }
+  UpdateUserPayload: { // field return type name
+    message: 'String'
     user: 'User'
   }
   User: { // field return type name
@@ -236,9 +227,14 @@ export interface NexusGenArgTypes {
       passwordResetCode: string; // String!
     }
     updateTask: { // args
-      description?: string | null; // String
+      description?: NexusGenScalars['NonEmptyString'] | null; // NonEmptyString
       id: string; // String!
-      title?: string | null; // String
+      title?: NexusGenScalars['NonEmptyString'] | null; // NonEmptyString
+    }
+    updateUser: { // args
+      email?: NexusGenScalars['EmailAddress'] | null; // EmailAddress
+      password?: NexusGenScalars['Password'] | null; // Password
+      username?: NexusGenScalars['NonEmptyString'] | null; // NonEmptyString
     }
     verify: { // args
       id: string; // String!

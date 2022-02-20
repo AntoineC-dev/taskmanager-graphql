@@ -44,8 +44,8 @@ export const TaskMutation = extendType({
       type: "Task",
       args: {
         id: nonNull(stringArg()),
-        title: stringArg(),
-        description: stringArg(),
+        title: "NonEmptyString",
+        description: "NonEmptyString",
       },
       resolve(_, args, ctx) {
         checkAuthenticated(ctx);

@@ -141,5 +141,13 @@ export const AuthMutation = extendType({
         return "Password successfully updated";
       },
     });
+    t.nonNull.field("logoutEverywhere", {
+      type: "String",
+      async resolve(_, __, ctx) {
+        const { userId } = checkAuthenticated(ctx);
+        await ctx.prisma.session.updateMany({ where: { userId }, data: { valid: false } });
+        return "All sessions closed";
+      },
+    });
   },
 });
