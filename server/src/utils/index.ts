@@ -3,6 +3,7 @@ export {
   checkDuplicateEmail,
   checkLoginCredentials,
   checkNotAuthenticated,
+  checkPasswordResetCode,
   checkUserVerified,
   checkVerificationCode,
 } from "./errors.utils";

@@ -35,6 +35,16 @@ export function checkNotAuthenticated(ctx: Context) {
   }
 }
 
+export async function checkPasswordResetCode(
+  ctx: Context,
+  { id, passwordResetCode }: { id: string; passwordResetCode: string }
+) {
+  const user = await ctx.prisma.user.findUnique({ where: { id } });
+  if (!user || !user.verified || user.passwordResetCode !== passwordResetCode) {
+    throw new Error("We could not reset your password");
+  }
+}
+
 export function checkUserVerified(user: User) {
   if (!user.verified) {
     throw new Error("Please verify your email");
