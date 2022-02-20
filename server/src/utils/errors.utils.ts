@@ -1,10 +1,11 @@
 import { Context } from "../context";
 import { comparePwd } from "./pwd.utils";
 import { User } from "@prisma/client";
+import { AuthenticationError, ForbiddenError, UserInputError } from "apollo-server";
 
 export function checkAuthenticated(ctx: Context) {
   if (!ctx.decoded) {
-    throw new Error("Forbidden! This request requires authentication");
+    throw new ForbiddenError("This resource requires authorization");
   }
   return ctx.decoded;
 }
@@ -12,7 +13,7 @@ export function checkAuthenticated(ctx: Context) {
 export async function checkDuplicateEmail(ctx: Context, email: string) {
   const duplicateEmail = await ctx.prisma.user.findUnique({ where: { email } });
   if (duplicateEmail) {
-    throw new Error("Email address already in use");
+    throw new AuthenticationError("Email address already in use");
   }
 }
 
@@ -20,18 +21,18 @@ export async function checkLoginCredentials(ctx: Context, { email, password }: {
   const errorMessage = "Invalid email or password";
   const user = await ctx.prisma.user.findUnique({ where: { email } });
   if (!user) {
-    throw new Error(errorMessage);
+    throw new AuthenticationError(errorMessage);
   }
   const valid = await comparePwd(user.password, password);
   if (!valid) {
-    throw new Error(errorMessage);
+    throw new AuthenticationError(errorMessage);
   }
   return user;
 }
 
 export function checkNotAuthenticated(ctx: Context) {
   if (ctx.decoded) {
-    throw new Error("Already logged in");
+    throw new AuthenticationError("You are already authenticated");
   }
 }
 
@@ -41,13 +42,13 @@ export async function checkPasswordResetCode(
 ) {
   const user = await ctx.prisma.user.findUnique({ where: { id } });
   if (!user || !user.verified || user.passwordResetCode !== passwordResetCode) {
-    throw new Error("We could not reset your password");
+    throw new UserInputError("We could not reset your password");
   }
 }
 
 export function checkUserVerified(user: User) {
   if (!user.verified) {
-    throw new Error("Please verify your email");
+    throw new AuthenticationError("Your email is not verified");
   }
 }
 
@@ -57,6 +58,6 @@ export async function checkVerificationCode(
 ) {
   const user = await ctx.prisma.user.findUnique({ where: { id } });
   if (!user || user.verified || user.verificationCode !== verificationCode) {
-    throw new Error("Could not verify your account");
+    throw new UserInputError("We could not verify your account");
   }
 }
