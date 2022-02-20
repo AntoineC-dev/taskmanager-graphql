@@ -7,6 +7,9 @@ import { logger, verifySMTP } from "./utils";
 export const server = new ApolloServer({
   schema,
   context,
+  cors: {
+    exposedHeaders: ["x-access-token"],
+  },
 });
 
 const port = config.get<string>("port");
