@@ -26,6 +26,7 @@ type Mutation {
   login(email: EmailAddress!, password: String!): AuthPayload!
   logout: String!
   register(email: EmailAddress!, password: Password!, username: NonEmptyString!): User!
+  resetPassword(id: String!, password: Password!, passwordResetCode: String!): String!
   updateTask(description: String, id: String!, title: String): Task!
   verify(id: String!, verificationCode: String!): String!
 }
@@ -40,6 +41,7 @@ scalar Password
 
 type Query {
   me: User!
+  sendPasswordResetCodeEmail(email: String!): String!
   sendVerificationEmail(email: String!): String!
 }
 

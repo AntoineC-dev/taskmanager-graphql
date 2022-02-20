@@ -5,8 +5,10 @@ import {
   checkDuplicateEmail,
   checkLoginCredentials,
   checkNotAuthenticated,
+  checkPasswordResetCode,
   checkUserVerified,
   checkVerificationCode,
+  generateUniqueIdentifier,
   hashPwd,
   sendPasswordResetCodeEmail,
   sendVerificationEmail,
@@ -50,7 +52,9 @@ export const AuthQuery = extendType({
         const user = await ctx.prisma.user.findUnique({ where: { email: args.email } });
         if (!user) return message;
         checkUserVerified(user);
-        sendPasswordResetCodeEmail(user);
+        const passwordResetCode = generateUniqueIdentifier();
+        const updatedUser = await ctx.prisma.user.update({ where: { email: args.email }, data: { passwordResetCode } });
+        sendPasswordResetCodeEmail(updatedUser);
         return message;
       },
     });
@@ -120,6 +124,21 @@ export const AuthMutation = extendType({
         const { sessionId } = checkAuthenticated(ctx);
         await ctx.prisma.session.update({ where: { id: sessionId }, data: { valid: false } });
         return "Successfully logged out";
+      },
+    });
+    t.nonNull.field("resetPassword", {
+      type: "String",
+      args: {
+        id: nonNull(stringArg()),
+        password: nonNull("Password"),
+        passwordResetCode: nonNull(stringArg()),
+      },
+      async resolve(_, args, ctx) {
+        const { id, password, passwordResetCode } = args;
+        await checkPasswordResetCode(ctx, { id, passwordResetCode });
+        const hash = await hashPwd(password);
+        await ctx.prisma.user.update({ where: { id }, data: { password: hash, passwordResetCode: null } });
+        return "Password successfully updated";
       },
     });
   },

@@ -126,11 +126,13 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     logout: string; // String!
     register: NexusGenRootTypes['User']; // User!
+    resetPassword: string; // String!
     updateTask: NexusGenRootTypes['Task']; // Task!
     verify: string; // String!
   }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
+    sendPasswordResetCodeEmail: string; // String!
     sendVerificationEmail: string; // String!
   }
   Session: { // field return type
@@ -174,11 +176,13 @@ export interface NexusGenFieldTypeNames {
     login: 'AuthPayload'
     logout: 'String'
     register: 'User'
+    resetPassword: 'String'
     updateTask: 'Task'
     verify: 'String'
   }
   Query: { // field return type name
     me: 'User'
+    sendPasswordResetCodeEmail: 'String'
     sendVerificationEmail: 'String'
   }
   Session: { // field return type name
@@ -226,6 +230,11 @@ export interface NexusGenArgTypes {
       password: NexusGenScalars['Password']; // Password!
       username: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     }
+    resetPassword: { // args
+      id: string; // String!
+      password: NexusGenScalars['Password']; // Password!
+      passwordResetCode: string; // String!
+    }
     updateTask: { // args
       description?: string | null; // String
       id: string; // String!
@@ -237,6 +246,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    sendPasswordResetCodeEmail: { // args
+      email: string; // String!
+    }
     sendVerificationEmail: { // args
       email: string; // String!
     }
