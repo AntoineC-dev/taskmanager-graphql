@@ -119,6 +119,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Mutation: { // field return type
+    clearTasks: string; // String!
     createTask: NexusGenRootTypes['Task']; // Task!
     deleteTask: NexusGenRootTypes['Task']; // Task!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
@@ -128,7 +129,6 @@ export interface NexusGenFieldTypes {
     verify: string; // String!
   }
   Query: { // field return type
-    clearTasks: string; // String!
     me: NexusGenRootTypes['User']; // User!
   }
   Session: { // field return type
@@ -166,6 +166,7 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Mutation: { // field return type name
+    clearTasks: 'String'
     createTask: 'Task'
     deleteTask: 'Task'
     login: 'AuthPayload'
@@ -175,7 +176,6 @@ export interface NexusGenFieldTypeNames {
     verify: 'String'
   }
   Query: { // field return type name
-    clearTasks: 'String'
     me: 'User'
   }
   Session: { // field return type name

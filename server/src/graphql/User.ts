@@ -37,6 +37,12 @@ export const UserQuery = extendType({
         return user;
       },
     });
+  },
+});
+
+export const UserMutation = extendType({
+  type: "Mutation",
+  definition(t) {
     t.nonNull.field("clearTasks", {
       type: "String",
       async resolve(_, __, ctx) {
