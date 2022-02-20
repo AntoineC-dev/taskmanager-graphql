@@ -39,15 +39,18 @@ export function signTokens(payload: JWTPayload) {
 
 export function deserializeTokens(req: Request, res: Response) {
   const accessToken = req.get("x-access-token");
-  const refreshToken = req.get("x-refresh-token");
   if (accessToken) {
     const accessDecoded = verifyJwt(accessToken);
     if (accessDecoded) return accessDecoded;
   }
+  const refreshToken = req.get("x-refresh-token");
   if (refreshToken) {
     const refreshDecoded = verifyJwt(refreshToken);
     if (refreshDecoded) {
-      const newAccessToken = signJwt(refreshDecoded, "accessToken");
+      const newAccessToken = signJwt(
+        { userId: refreshDecoded.userId, sessionId: refreshDecoded.sessionId },
+        "accessToken"
+      );
       res.setHeader("x-access-token", newAccessToken);
       return refreshDecoded;
     }
