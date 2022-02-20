@@ -39,7 +39,6 @@ scalar Password
 type Query {
   clearTasks: String!
   me: User!
-  users: [User]!
 }
 
 type Session {

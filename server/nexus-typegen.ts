@@ -130,7 +130,6 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     clearTasks: string; // String!
     me: NexusGenRootTypes['User']; // User!
-    users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
   Session: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -178,7 +177,6 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     clearTasks: 'String'
     me: 'User'
-    users: 'User'
   }
   Session: { // field return type name
     createdAt: 'DateTime'
