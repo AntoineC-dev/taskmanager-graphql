@@ -1,4 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { resolve } from "path/posix";
 import {
   checkAuthenticated,
   checkDuplicateEmail,
@@ -7,6 +8,7 @@ import {
   checkUserVerified,
   checkVerificationCode,
   hashPwd,
+  sendPasswordResetCodeEmail,
   sendVerificationEmail,
   signTokens,
 } from "../utils";
@@ -35,6 +37,20 @@ export const AuthQuery = extendType({
         const user = await ctx.prisma.user.findUnique({ where: { email: args.email } });
         if (!user || user.verified) return message;
         sendVerificationEmail(user);
+        return message;
+      },
+    });
+    t.nonNull.field("sendResetässwordCode", {
+      type: "String",
+      args: {
+        email: nonNull(stringArg()),
+      },
+      async resolve(_, args, ctx) {
+        const message = "We have sent you a password reset code";
+        const user = await ctx.prisma.user.findUnique({ where: { email: args.email } });
+        if (!user) return message;
+        checkUserVerified(user);
+        sendPasswordResetCodeEmail(user);
         return message;
       },
     });
