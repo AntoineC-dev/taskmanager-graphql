@@ -40,7 +40,7 @@ export const AuthQuery = extendType({
         return message;
       },
     });
-    t.nonNull.field("sendResetässwordCode", {
+    t.nonNull.field("sendPasswordResetCode", {
       type: "String",
       args: {
         email: nonNull(stringArg()),
