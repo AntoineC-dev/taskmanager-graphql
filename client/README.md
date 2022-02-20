@@ -11,3 +11,4 @@ This project was bootstrapped with
 - Apollo Client
 - Graphql
 - React hook form
+- React router v6
