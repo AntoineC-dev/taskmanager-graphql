@@ -47,14 +47,17 @@ export const TaskMutation = extendType({
         title: "NonEmptyString",
         description: "NonEmptyString",
       },
-      resolve(_, args, ctx) {
+      async resolve(_, args, ctx) {
         checkAuthenticated(ctx);
         const { id, description, title } = args;
+        const task = await ctx.prisma.task.findUnique({ where: { id }, rejectOnNotFound: true });
+        const updatedTitle = title && title !== task.title;
+        const updatedDesc = description && description !== task.description;
         return ctx.prisma.task.update({
           where: { id },
           data: {
-            title: title ?? undefined,
-            description: description ?? undefined,
+            title: updatedTitle ? title : undefined,
+            description: updatedDesc ? description : undefined,
           },
         });
       },
