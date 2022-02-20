@@ -19,8 +19,9 @@ A field whose value matches /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)
 scalar EmailAddress
 
 type Mutation {
-  clearTasks: String!
-  createTask(description: String, title: NonEmptyString!): Task!
+  clearSessions: String!
+  createTask(description: NonEmptyString!, title: NonEmptyString!): Task!
+  deleteAllTasks: String!
   deleteTask(id: String!): Task!
   login(email: EmailAddress!, password: String!): AuthPayload!
   logout: String!
@@ -39,6 +40,7 @@ scalar Password
 
 type Query {
   me: User!
+  sendVerificationEmail(email: String!): String!
 }
 
 type Session {
@@ -53,7 +55,7 @@ type Session {
 type Task {
   completed: Boolean!
   createdAt: DateTime!
-  description: String
+  description: NonEmptyString!
   id: String!
   title: NonEmptyString!
   updatedAt: DateTime!
@@ -64,7 +66,6 @@ type User {
   createdAt: DateTime!
   email: EmailAddress!
   id: NonEmptyString!
-  sessions: [Session!]!
   tasks: [Task!]!
   updatedAt: DateTime!
   username: NonEmptyString!

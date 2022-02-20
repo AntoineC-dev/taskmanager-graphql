@@ -15,12 +15,6 @@ export const UserModel = objectType({
         return ctx.prisma.user.findUnique({ where: { id: parent.id } }).tasks();
       },
     });
-    t.nonNull.list.nonNull.field("sessions", {
-      type: "Session",
-      resolve(parent, args, ctx) {
-        return ctx.prisma.user.findUnique({ where: { id: parent.id } }).sessions();
-      },
-    });
   },
 });
 
@@ -35,23 +29,6 @@ export const UserQuery = extendType({
         }
         const user = (await ctx.prisma.user.findUnique({ where: { id: ctx.decoded.userId } })) as User;
         return user;
-      },
-    });
-  },
-});
-
-export const UserMutation = extendType({
-  type: "Mutation",
-  definition(t) {
-    t.nonNull.field("clearTasks", {
-      type: "String",
-      async resolve(_, __, ctx) {
-        if (!ctx.decoded) {
-          throw new Error("Forbidden. You must be logged in");
-        }
-        const { userId } = ctx.decoded;
-        await ctx.prisma.task.deleteMany({ where: { userId } });
-        return "All tasks deleted";
       },
     });
   },

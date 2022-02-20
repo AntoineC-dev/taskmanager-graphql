@@ -1,5 +1,15 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
-import { comparePwd, hashPwd, sendVerificationEmail, signTokens } from "../utils";
+import {
+  checkAuthenticated,
+  checkDuplicateEmail,
+  checkLoginCredentials,
+  checkNotAuthenticated,
+  checkUserVerified,
+  checkVerificationCode,
+  hashPwd,
+  sendVerificationEmail,
+  signTokens,
+} from "../utils";
 
 export const AuthPayloadModel = objectType({
   name: "AuthPayload",
@@ -8,6 +18,25 @@ export const AuthPayloadModel = objectType({
     t.nonNull.string("refreshToken");
     t.nonNull.field("user", {
       type: "User",
+    });
+  },
+});
+
+export const AuthQuery = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.field("sendVerificationEmail", {
+      type: "String",
+      args: {
+        email: nonNull(stringArg()),
+      },
+      async resolve(_, args, ctx) {
+        const message = "We have sent you a verification email";
+        const user = await ctx.prisma.user.findUnique({ where: { email: args.email } });
+        if (!user || user.verified) return message;
+        sendVerificationEmail(user);
+        return message;
+      },
     });
   },
 });
@@ -24,10 +53,7 @@ export const AuthMutation = extendType({
       },
       async resolve(_, args, ctx) {
         const { email, password, username } = args;
-        const duplicateEmail = await ctx.prisma.user.findUnique({ where: { email } });
-        if (duplicateEmail) {
-          throw new Error("Email address already in use");
-        }
+        await checkDuplicateEmail(ctx, email);
         const hash = await hashPwd(password);
         const user = await ctx.prisma.user.create({
           data: {
@@ -47,13 +73,8 @@ export const AuthMutation = extendType({
         verificationCode: nonNull(stringArg()),
       },
       async resolve(parent, args, ctx) {
-        const { id, verificationCode } = args;
-        const errorMessage = "Could not verify your account";
-        const user = await ctx.prisma.user.findUnique({ where: { id } });
-        if (!user || user.verified || user.verificationCode !== verificationCode) {
-          throw new Error(errorMessage);
-        }
-        await ctx.prisma.user.update({ where: { id }, data: { verified: true } });
+        await checkVerificationCode(ctx, args);
+        await ctx.prisma.user.update({ where: { id: args.id }, data: { verified: true } });
         return "Account successfully verified";
       },
     });
@@ -64,22 +85,9 @@ export const AuthMutation = extendType({
         password: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
-        const { email, password } = args;
-        if (ctx.decoded) {
-          throw new Error("User already logged in");
-        }
-        const errorMessage = "Invalid email or password";
-        const user = await ctx.prisma.user.findUnique({ where: { email } });
-        if (!user) {
-          throw new Error(errorMessage);
-        }
-        if (!user.verified) {
-          throw new Error("Please verify your email");
-        }
-        const valid = await comparePwd(user.password, password);
-        if (!valid) {
-          throw new Error(errorMessage);
-        }
+        checkNotAuthenticated(ctx);
+        const user = await checkLoginCredentials(ctx, args);
+        checkUserVerified(user);
         const session = await ctx.prisma.session.create({
           data: {
             userAgent: ctx.userAgent ?? "",
@@ -93,10 +101,7 @@ export const AuthMutation = extendType({
     t.nonNull.field("logout", {
       type: "String",
       async resolve(_, __, ctx) {
-        if (!ctx.decoded) {
-          throw new Error("Forbidden. You must be logged in");
-        }
-        const { sessionId } = ctx.decoded;
+        const { sessionId } = checkAuthenticated(ctx);
         await ctx.prisma.session.update({ where: { id: sessionId }, data: { valid: false } });
         return "Successfully logged out";
       },
