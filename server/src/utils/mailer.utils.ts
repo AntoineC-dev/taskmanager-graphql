@@ -38,7 +38,7 @@ export function sendVerificationEmail(user: User) {
       from: `Graphql TaskManager<${smtp.from}>`,
       to: email,
       subject: "Please verify your account",
-      text: `id:${id}||verificationCode:${verificationCode}`,
+      text: `Id: ${id} | Code: ${verificationCode}`,
     },
     (error, _) => {
       if (error) {
@@ -46,6 +46,26 @@ export function sendVerificationEmail(user: User) {
         return false;
       }
       logger.info(`Verification email sent to ${email}`);
+      return true;
+    }
+  );
+}
+
+export function sendPasswordResetCodeEmail(user: User) {
+  const { email, passwordResetCode } = user;
+  transporter.sendMail(
+    {
+      from: `Graphql TaskManager<${smtp.from}>`,
+      to: email,
+      subject: "Password reset code",
+      text: `Code: ${passwordResetCode}`,
+    },
+    (error, _) => {
+      if (error) {
+        logger.error(error, "PasswordResetCodeEmail Error");
+        return false;
+      }
+      logger.info(`Password reset code sent to ${email}`);
       return true;
     }
   );
