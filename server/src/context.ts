@@ -1,4 +1,4 @@
-import { PrismaClient, Session } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { deserializeTokens, JWTPayload } from "./utils";
 
@@ -8,6 +8,8 @@ export interface Context {
   prisma: PrismaClient;
   decoded: JWTPayload | null;
   userAgent: string | null;
+  req: Request;
+  res: Response;
 }
 
 export const context = async ({ req, res }: { req: Request; res: Response }): Promise<Context> => {
@@ -21,5 +23,7 @@ export const context = async ({ req, res }: { req: Request; res: Response }): Pr
     prisma,
     decoded,
     userAgent,
+    req,
+    res,
   };
 };
