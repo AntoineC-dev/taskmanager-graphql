@@ -18,7 +18,7 @@ export const RegisterPage = () => {
     resolver: zodResolver(registerFormSchema),
     mode: "onChange",
   });
-  const [registerUser, { data, error, loading }] = useMutation(REGISTER_MUTATION);
+  const [registerUser, { data, error, loading, called, reset }] = useMutation(REGISTER_MUTATION);
   const toast = useToast();
   useEffect(() => {
     if (error) {
@@ -28,14 +28,22 @@ export const RegisterPage = () => {
         status: "error",
       });
     }
-    if (data) {
-      console.log(data);
+    if (called && data) {
+      toast({
+        title: "Account created",
+        description: "Please verify your email",
+        status: "success",
+      });
+      reset();
     }
-  }, [data, error, toast]);
-  const onSubmit = (formData: RegisterFormInput) =>
+  }, [called, data, error, reset, toast]);
+  const onSubmit = (formData: RegisterFormInput) => {
+    const { passwordConfirmation, ...rest } = formData;
     registerUser({
-      variables: formData,
+      variables: rest,
     });
+  };
+
   return (
     <VStack as="form" maxW="container.sm" w="100%" justifySelf="center" spacing={4}>
       <Heading>Create New Account</Heading>
@@ -45,7 +53,12 @@ export const RegisterPage = () => {
       <HookFormInput control={control} name="username" />
       <HookFormInput control={control} name="email" type="email" />
       <HookFormInput control={control} name="password" type="password" />
-      <HookFormInput control={control} name="passwordConfirmation" type="password" />
+      <HookFormInput
+        control={control}
+        name="passwordConfirmation"
+        type="password"
+        placeholder="Confirm your password here..."
+      />
       <Button onClick={handleSubmit(onSubmit)} disabled={loading}>
         Register Now
       </Button>
