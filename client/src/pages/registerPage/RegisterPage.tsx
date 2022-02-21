@@ -48,7 +48,7 @@ export const RegisterPage = () => {
     <VStack as="form" maxW="container.sm" w="100%" justifySelf="center" spacing={4}>
       <Heading>Create New Account</Heading>
       <Code fontSize="md" px="2">
-        GQLMutation: REGISTER
+        GQLMutation: REGISTER_MUTATION
       </Code>
       <HookFormInput control={control} name="username" />
       <HookFormInput control={control} name="email" type="email" />
