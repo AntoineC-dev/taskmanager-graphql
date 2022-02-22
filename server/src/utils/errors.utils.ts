@@ -21,11 +21,11 @@ export async function checkLoginCredentials(ctx: Context, { email, password }: {
   const errorMessage = "Invalid email or password";
   const user = await ctx.prisma.user.findUnique({ where: { email } });
   if (!user) {
-    throw new AuthenticationError(errorMessage);
+    throw new UserInputError(errorMessage);
   }
   const valid = await comparePwd(user.password, password);
   if (!valid) {
-    throw new AuthenticationError(errorMessage);
+    throw new UserInputError(errorMessage);
   }
   return user;
 }
