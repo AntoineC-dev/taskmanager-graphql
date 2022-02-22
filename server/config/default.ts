@@ -16,4 +16,10 @@ export default {
       pass: process.env.SMTP_PASSWORD,
     },
   },
+  cookieOptions: {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+    maxAge: 60 * 60 * 24 * 365.25,
+  },
 };
