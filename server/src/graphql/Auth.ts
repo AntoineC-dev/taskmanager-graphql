@@ -95,6 +95,8 @@ export const AuthMutation = extendType({
       async resolve(parent, args, ctx) {
         await checkVerificationCode(ctx, args);
         await ctx.prisma.user.update({ where: { id: args.id }, data: { verified: true } });
+        const verificationCode = generateUniqueIdentifier();
+        await ctx.prisma.user.update({ where: { id: args.id }, data: { verificationCode } });
         return "Account successfully verified";
       },
     });
