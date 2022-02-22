@@ -1,6 +1,8 @@
 import * as jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import config from "config";
+import { extractRefreshTokenFromCookies } from "./cookies.utils";
+import { clearRefreshTokenCookie } from ".";
 
 const accessTokenTtl = config.get<string>("accessTokenTtl");
 const refreshTokenTtl = config.get<string>("refreshTokenTtl");
@@ -38,22 +40,22 @@ export function signTokens(payload: JWTPayload) {
 }
 
 export function deserializeTokens(req: Request, res: Response) {
-  const accessToken = req.get("x-access-token");
+  const accessToken = req.headers.authorization;
   if (accessToken) {
-    const accessDecoded = verifyJwt(accessToken);
-    if (accessDecoded) return accessDecoded;
+    const decoded = verifyJwt(accessToken);
+    if (decoded) return decoded;
   }
-  const refreshToken = req.get("x-refresh-token");
+  const refreshToken = extractRefreshTokenFromCookies(req.headers.cookie);
   if (refreshToken) {
-    const refreshDecoded = verifyJwt(refreshToken);
-    if (refreshDecoded) {
-      const newAccessToken = signJwt(
-        { userId: refreshDecoded.userId, sessionId: refreshDecoded.sessionId },
-        "accessToken"
-      );
+    const decoded = verifyJwt(refreshToken);
+    if (decoded) {
+      const { sessionId, userId } = decoded;
+      const newAccessToken = signJwt({ userId, sessionId }, "accessToken");
       res.setHeader("x-access-token", newAccessToken);
-      return refreshDecoded;
+      console.log("accessToken refreshed");
+      return decoded;
     }
+    clearRefreshTokenCookie(res);
   }
   return null;
 }
