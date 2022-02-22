@@ -1,5 +1,4 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
-import { resolve } from "path/posix";
 import {
   checkAuthenticated,
   checkDuplicateEmail,
@@ -8,6 +7,8 @@ import {
   checkPasswordResetCode,
   checkUserVerified,
   checkVerificationCode,
+  clearRefreshTokenCookie,
+  createRefreshTokenCookie,
   generateUniqueIdentifier,
   hashPwd,
   sendPasswordResetCodeEmail,
@@ -19,7 +20,6 @@ export const AuthPayloadModel = objectType({
   name: "AuthPayload",
   definition(t) {
     t.nonNull.string("accessToken");
-    t.nonNull.string("refreshToken");
     t.nonNull.field("user", {
       type: "User",
     });
@@ -115,7 +115,8 @@ export const AuthMutation = extendType({
           },
         });
         const { accessToken, refreshToken } = signTokens({ userId: user.id, sessionId: session.id });
-        return { accessToken, refreshToken, user };
+        createRefreshTokenCookie(ctx.res, refreshToken);
+        return { accessToken, user };
       },
     });
     t.nonNull.field("logout", {
@@ -123,6 +124,7 @@ export const AuthMutation = extendType({
       async resolve(_, __, ctx) {
         const { sessionId } = checkAuthenticated(ctx);
         await ctx.prisma.session.update({ where: { id: sessionId }, data: { valid: false } });
+        clearRefreshTokenCookie(ctx.res);
         return "Successfully logged out";
       },
     });
@@ -138,6 +140,8 @@ export const AuthMutation = extendType({
         await checkPasswordResetCode(ctx, { id, passwordResetCode });
         const hash = await hashPwd(password);
         await ctx.prisma.user.update({ where: { id }, data: { password: hash, passwordResetCode: null } });
+        await ctx.prisma.session.updateMany({ where: { userId: id }, data: { valid: false } });
+        clearRefreshTokenCookie(ctx.res);
         return "Password successfully updated";
       },
     });
@@ -146,6 +150,7 @@ export const AuthMutation = extendType({
       async resolve(_, __, ctx) {
         const { userId } = checkAuthenticated(ctx);
         await ctx.prisma.session.updateMany({ where: { userId }, data: { valid: false } });
+        clearRefreshTokenCookie(ctx.res);
         return "All sessions closed";
       },
     });
