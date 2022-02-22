@@ -8,7 +8,6 @@ export interface Context {
   prisma: PrismaClient;
   decoded: JWTPayload | null;
   userAgent: string | null;
-  req: Request;
   res: Response;
 }
 
@@ -23,7 +22,6 @@ export const context = async ({ req, res }: { req: Request; res: Response }): Pr
     prisma,
     decoded,
     userAgent,
-    req,
     res,
   };
 };
