@@ -1,5 +1,4 @@
 import { extendType, objectType } from "nexus";
-import { User } from "@prisma/client";
 import { checkAuthenticated, comparePwd, generateUniqueIdentifier, hashPwd, sendVerificationEmail } from "../utils";
 
 export const UserModel = objectType({
@@ -25,11 +24,8 @@ export const UserQuery = extendType({
     t.nonNull.field("me", {
       type: "User",
       async resolve(_, __, ctx) {
-        if (!ctx.decoded) {
-          throw new Error("Forbidden. You must be logged in");
-        }
-        const user = (await ctx.prisma.user.findUnique({ where: { id: ctx.decoded.userId } })) as User;
-        return user;
+        const { userId } = checkAuthenticated(ctx);
+        return await ctx.prisma.user.findUnique({ where: { id: userId }, rejectOnNotFound: true });
       },
     });
   },
