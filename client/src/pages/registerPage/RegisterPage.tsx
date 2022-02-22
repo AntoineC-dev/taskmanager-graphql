@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormInput, registerFormSchema } from "../../validators";
 import { HookFormInput } from "../../components";
 import { useMutation } from "@apollo/client";
-import { REGISTER_MUTATION } from "../../graphql";
+import { RegisterData, RegisterVariables, REGISTER_MUTATION } from "../../graphql";
 import { useMutationFeedbackEffect } from "../../hooks";
 
 export const RegisterPage = () => {
@@ -18,7 +18,7 @@ export const RegisterPage = () => {
     resolver: zodResolver(registerFormSchema),
     mode: "onChange",
   });
-  const [registerUser, { data, error, loading }] = useMutation(REGISTER_MUTATION);
+  const [registerUser, { data, error, loading }] = useMutation<RegisterData, RegisterVariables>(REGISTER_MUTATION);
   useMutationFeedbackEffect({
     data,
     error,
@@ -31,6 +31,7 @@ export const RegisterPage = () => {
     }).then(({ data }) => {
       if (data) {
         reset();
+        // TODO: navigate to login page
         console.log("Navigate to login page");
       }
     });
