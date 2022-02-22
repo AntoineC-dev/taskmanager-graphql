@@ -8,7 +8,7 @@ export const server = new ApolloServer({
   schema,
   context,
   cors: {
-    origin: ["https://studio.apollographql.com"],
+    origin: ["https://studio.apollographql.com", "http://localhost:3000"],
     credentials: true,
     exposedHeaders: ["x-access-token"],
   },

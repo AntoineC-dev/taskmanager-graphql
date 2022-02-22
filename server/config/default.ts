@@ -19,7 +19,7 @@ export default {
   cookieOptions: {
     httpOnly: true,
     sameSite: "none",
-    secure: true,
+    secure: false,
     maxAge: 60 * 60 * 24 * 365.25,
   },
 };
