@@ -1,14 +1,14 @@
-import { useEffect } from "react";
-import { Button, Code, Heading, useToast, VStack } from "@chakra-ui/react";
+import { Button, Code, Heading, VStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormInput, registerFormSchema } from "../../validators";
 import { HookFormInput } from "../../components";
 import { useMutation } from "@apollo/client";
 import { REGISTER_MUTATION } from "../../graphql";
+import { useMutationFeedbackEffect } from "../../hooks";
 
 export const RegisterPage = () => {
-  const { control, handleSubmit } = useForm<RegisterFormInput>({
+  const { control, handleSubmit, reset } = useForm<RegisterFormInput>({
     defaultValues: {
       username: "",
       email: "",
@@ -18,34 +18,26 @@ export const RegisterPage = () => {
     resolver: zodResolver(registerFormSchema),
     mode: "onChange",
   });
-  const [registerUser, { data, error, loading, called, reset }] = useMutation(REGISTER_MUTATION);
-  const toast = useToast();
-  useEffect(() => {
-    if (error) {
-      toast({
-        title: error.name,
-        description: error.message,
-        status: "error",
-      });
-    }
-    if (called && data) {
-      toast({
-        title: "Account created",
-        description: "Please verify your email",
-        status: "success",
-      });
-      reset();
-    }
-  }, [called, data, error, reset, toast]);
+  const [registerUser, { data, error, loading }] = useMutation(REGISTER_MUTATION);
+  useMutationFeedbackEffect({
+    data,
+    error,
+    success: { title: "Account Created", description: "Please verify your email" },
+  });
   const onSubmit = (formData: RegisterFormInput) => {
     const { passwordConfirmation, ...rest } = formData;
     registerUser({
       variables: rest,
+    }).then(({ data }) => {
+      if (data) {
+        reset();
+        console.log("Navigate to login page");
+      }
     });
   };
 
   return (
-    <VStack as="form" maxW="container.sm" w="100%" justifySelf="center" spacing={4}>
+    <VStack as="form" maxW="container.sm" w="100%" justifySelf="center" spacing={4} onSubmit={handleSubmit(onSubmit)}>
       <Heading>Create New Account</Heading>
       <Code fontSize="md" px="2">
         GQLMutation: REGISTER_MUTATION
@@ -59,7 +51,7 @@ export const RegisterPage = () => {
         type="password"
         placeholder="Confirm your password here..."
       />
-      <Button onClick={handleSubmit(onSubmit)} disabled={loading}>
+      <Button type="submit" disabled={loading}>
         Register Now
       </Button>
     </VStack>
