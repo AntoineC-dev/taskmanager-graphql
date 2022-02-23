@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes as RouterRoutes, Route } from "react-router-dom";
 import { Layout } from "./Layout";
-import { HomePage, LoginPage, RegisterPage } from "../pages";
+import { HomePage, LoginPage, RegisterPage, VerifyPage } from "../pages";
 import { APP_ROUTES } from "./APP_ROUTES";
 
 export const Router = () => {
@@ -12,6 +12,7 @@ export const Router = () => {
           <Route path={APP_ROUTES.register} element={<RegisterPage />} />
           <Route path={APP_ROUTES.login} element={<LoginPage />} />
         </Route>
+        <Route path={APP_ROUTES.verify} element={<VerifyPage />} />
       </RouterRoutes>
     </BrowserRouter>
   );
