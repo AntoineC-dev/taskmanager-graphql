@@ -1,11 +1,11 @@
 import { Button, Code, Heading, VStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterFormInput, registerFormSchema } from "../../validators";
-import { HookFormInput } from "../../components";
+import { RegisterFormInput, registerFormSchema } from "../validators";
+import { HookFormInput } from "../components";
 import { useMutation } from "@apollo/client";
-import { RegisterData, RegisterVariables, REGISTER_MUTATION } from "../../graphql";
-import { useMutationFeedbackEffect } from "../../hooks";
+import { RegisterData, RegisterVariables, REGISTER_MUTATION } from "../graphql";
+import { useMutationFeedbackEffect } from "../hooks";
 
 export const RegisterPage = () => {
   const { control, handleSubmit, reset } = useForm<RegisterFormInput>({

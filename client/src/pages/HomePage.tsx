@@ -1,10 +1,10 @@
 import { Code, Link, Text, VStack } from "@chakra-ui/react";
-import { Logo } from "../../components";
+import { RotatingLogo } from "../components";
 
 export const HomePage = () => {
   return (
     <VStack spacing={8}>
-      <Logo h="40vmin" pointerEvents="none" />
+      <RotatingLogo h="40vmin" pointerEvents="none" />
       <Text>
         Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
       </Text>
