@@ -6,7 +6,7 @@ import { FaHome } from "react-icons/fa";
 export const Navbar = (props: StackProps) => {
   return (
     <HStack {...props}>
-      <ButtonGroup variant="ghost" flexGrow={1}>
+      <ButtonGroup variant="ghost" size="sm" flexGrow={1}>
         <RouterButton to={APP_ROUTES.home} leftIcon={<FaHome />}>
           Home
         </RouterButton>
