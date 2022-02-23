@@ -1,16 +1,25 @@
 import { Code, Link, Text, VStack } from "@chakra-ui/react";
-import { RotatingLogo } from "../components";
+import { ChevronRightIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { RotatingLogo, RouterButton } from "../components";
+import { APP_ROUTES, GITHUB_LINK } from "../navigation";
 
 export const HomePage = () => {
   return (
     <VStack spacing={8}>
       <RotatingLogo h="40vmin" pointerEvents="none" />
-      <Text>
-        Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
+      <Text fontSize="xl">
+        Welcome on my <Code fontSize="inherit">Graphql / React</Code> task manager.
       </Text>
-      <Link color="teal.500" href="https://chakra-ui.com" fontSize="2xl" target="_blank" rel="noopener noreferrer">
-        Learn Chakra
-      </Link>
+      <Text fontSize="lg">
+        You can find the source code as well as the API on my{" "}
+        <Link href={GITHUB_LINK} isExternal textDecor="underline">
+          Github
+          <ExternalLinkIcon mx="4px" />
+        </Link>
+      </Text>
+      <RouterButton to={APP_ROUTES.register} textTransform="uppercase" rightIcon={<ChevronRightIcon />}>
+        Start the Process
+      </RouterButton>
     </VStack>
   );
 };
