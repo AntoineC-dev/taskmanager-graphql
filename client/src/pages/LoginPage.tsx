@@ -1,38 +1,26 @@
 import { Button, Code, Heading, VStack } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterFormInput, registerFormSchema } from "../validators";
+import { LoginFormInput, loginFormSchema } from "../validators";
 import { HookFormInput } from "../components";
-import { useMutation } from "@apollo/client";
-import { RegisterData, RegisterVariables, REGISTER_MUTATION } from "../graphql";
-import { useMutationFeedbackEffect } from "../hooks";
+import { useLoginMutation } from "../graphql";
+import { useResolverForm } from "../hooks";
 
 export const LoginPage = () => {
-  const { control, handleSubmit, reset } = useForm<RegisterFormInput>({
+  const { control, handleSubmit } = useResolverForm<LoginFormInput>({
     defaultValues: {
-      username: "",
       email: "",
       password: "",
-      passwordConfirmation: "",
     },
-    resolver: zodResolver(registerFormSchema),
-    mode: "onChange",
+    schema: loginFormSchema,
   });
-  const [registerUser, { data, error, loading }] = useMutation<RegisterData, RegisterVariables>(REGISTER_MUTATION);
-  useMutationFeedbackEffect({
-    data,
-    error,
-    success: { title: "Account Created", description: "Please verify your email" },
-  });
-  const onSubmit = (formData: RegisterFormInput) => {
-    const { passwordConfirmation, ...rest } = formData;
-    registerUser({
-      variables: rest,
+  const [loginUser, { loading }] = useLoginMutation();
+  const onSubmit = (formData: LoginFormInput) => {
+    loginUser({
+      variables: formData,
     }).then(({ data }) => {
       if (data) {
-        reset();
+        console.log(data);
         // TODO: navigate to login page
-        console.log("Navigate to login page");
+        console.log("Navigate to dashboard page");
       }
     });
   };
@@ -43,15 +31,8 @@ export const LoginPage = () => {
       <Code fontSize="md" px="2">
         GQLMutation: LOGIN_MUTATION
       </Code>
-      <HookFormInput control={control} name="username" />
       <HookFormInput control={control} name="email" type="email" />
       <HookFormInput control={control} name="password" type="password" />
-      <HookFormInput
-        control={control}
-        name="passwordConfirmation"
-        type="password"
-        placeholder="Confirm your password here..."
-      />
       <Button type="submit" disabled={loading}>
         Register Now
       </Button>
