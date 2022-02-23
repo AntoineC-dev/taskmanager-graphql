@@ -3,3 +3,5 @@ export const APP_ROUTES = {
   register: "/register",
   login: "/login",
 };
+
+export const GITHUB_LINK = "https://github.com/AntoineC-dev/taskmanager-graphql";
