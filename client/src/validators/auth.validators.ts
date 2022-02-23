@@ -19,4 +19,12 @@ export const registerFormSchema = object({
   path: ["passwordConfirmation"],
 });
 
+export const loginFormSchema = object({
+  email: string().email({
+    message: "Invalid email format",
+  }),
+  password: string().nonempty({ message: "Password is required" }),
+});
+
 export type RegisterFormInput = TypeOf<typeof registerFormSchema>;
+export type LoginFormInput = TypeOf<typeof loginFormSchema>;

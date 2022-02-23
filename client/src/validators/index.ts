@@ -1,2 +1,2 @@
-export type { RegisterFormInput } from "./auth.validators";
-export { registerFormSchema } from "./auth.validators";
+export type { LoginFormInput, RegisterFormInput } from "./auth.validators";
+export { loginFormSchema, registerFormSchema } from "./auth.validators";
