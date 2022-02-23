@@ -1,38 +1,36 @@
-import { Button, Code, Heading, VStack } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Code, Heading, useToast, VStack } from "@chakra-ui/react";
 import { RegisterFormInput, registerFormSchema } from "../validators";
 import { HookFormInput } from "../components";
-import { useMutation } from "@apollo/client";
-import { RegisterData, RegisterVariables, REGISTER_MUTATION } from "../graphql";
-import { useMutationFeedbackEffect } from "../hooks";
+import { useRegisterMutation } from "../graphql";
+import { useNavigate } from "react-router-dom";
+import { APP_ROUTES } from "../navigation";
+import { useResolverForm } from "../hooks";
 
 export const RegisterPage = () => {
-  const { control, handleSubmit, reset } = useForm<RegisterFormInput>({
+  const { control, handleSubmit } = useResolverForm<RegisterFormInput>({
     defaultValues: {
       username: "",
       email: "",
       password: "",
       passwordConfirmation: "",
     },
-    resolver: zodResolver(registerFormSchema),
-    mode: "onChange",
+    schema: registerFormSchema,
   });
-  const [registerUser, { data, error, loading }] = useMutation<RegisterData, RegisterVariables>(REGISTER_MUTATION);
-  useMutationFeedbackEffect({
-    data,
-    error,
-    success: { title: "Account Created", description: "Please verify your email" },
-  });
+  const [registerUser, { loading }] = useRegisterMutation();
+  const navigate = useNavigate();
+  const toast = useToast();
   const onSubmit = (formData: RegisterFormInput) => {
     const { passwordConfirmation, ...rest } = formData;
     registerUser({
       variables: rest,
     }).then(({ data }) => {
       if (data) {
-        reset();
-        // TODO: navigate to login page
-        console.log("Navigate to login page");
+        toast({
+          title: "Account created",
+          description: "Please verify your email",
+          status: "success",
+        });
+        navigate(APP_ROUTES.login);
       }
     });
   };
