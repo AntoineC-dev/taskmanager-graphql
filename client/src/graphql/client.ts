@@ -1,5 +1,8 @@
 import { ApolloClient, ApolloLink, concat, HttpLink, InMemoryCache } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
+import { createStandaloneToast } from "@chakra-ui/react";
+
+const toast = createStandaloneToast();
 
 const httpLink = new HttpLink({
   uri: "http://localhost:3001",
@@ -18,6 +21,17 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 const logoutLink = onError(({ response }) => {
   if (response?.extensions && response.extensions.code === "FORBIDDEN" && localStorage.getItem("token")) {
     localStorage.removeItem("token");
+    toast({
+      title: "Access forbidden",
+      description: "This resource requires authorization",
+    });
+  }
+  if (response?.errors) {
+    response.errors.forEach((error) => {
+      toast({
+        description: error.message,
+      });
+    });
   }
 });
 
