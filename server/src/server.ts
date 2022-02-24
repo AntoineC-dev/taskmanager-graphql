@@ -10,7 +10,7 @@ export const server = new ApolloServer({
   cors: {
     origin: ["https://studio.apollographql.com", "http://localhost:3000"],
     credentials: true,
-    exposedHeaders: ["x-access-token"],
+    exposedHeaders: ["Authorization"],
   },
 });
 

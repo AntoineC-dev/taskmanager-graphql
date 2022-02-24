@@ -49,7 +49,7 @@ export function deserializeTokens(req: Request, res: Response) {
     if (decoded) {
       const { sessionId, userId } = decoded;
       const newAccessToken = signJwt({ userId, sessionId }, "accessToken");
-      res.setHeader("x-access-token", newAccessToken);
+      res.setHeader("Authorization", newAccessToken);
       console.log("accessToken refreshed");
       return decoded;
     }
