@@ -7,25 +7,47 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import { EmailIcon } from "@chakra-ui/icons";
+import { useResolverForm, useSendVerificationEmailLazyQuery } from "../../hooks";
+import { EmailFormInput, emailFormSchema } from "../../validators";
+import { HookFormInput } from "../HookFormInput";
 
 export const SendVerificationEmailModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { control, handleSubmit, reset } = useResolverForm<EmailFormInput>({
+    schema: emailFormSchema,
+    defaultValues: { email: "" },
+  });
+  const onCloseReset = () => {
+    reset();
+    onClose();
+  };
+  const toast = useToast();
+  const [sendEmail] = useSendVerificationEmailLazyQuery({
+    onCompleted: ({ sendVerificationEmail }) => {
+      toast({ title: sendVerificationEmail, status: "success", isClosable: true });
+      onCloseReset();
+    },
+  });
+  const onSubmit = (variables: EmailFormInput) => sendEmail({ variables });
   return (
     <>
-      <Button onClick={onOpen}>Send verification email</Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Button onClick={onOpen} variant="ghost" size="sm" rightIcon={<EmailIcon />}>
+        Send verification email
+      </Button>
+      <Modal isOpen={isOpen} onClose={onCloseReset}>
         <ModalOverlay />
-        <ModalContent as="form">
+        <ModalContent as="form" onSubmit={handleSubmit(onSubmit)}>
           <ModalHeader>Send verification mail</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>Modal Body</Text>
+            <HookFormInput control={control} name="email" type="email" />
           </ModalBody>
           <ModalFooter>
-            <Button>Send email</Button>
+            <Button type="submit">Send email</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
