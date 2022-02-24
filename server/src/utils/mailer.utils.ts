@@ -14,6 +14,7 @@ interface SMTPConfig {
 }
 
 const smtp = config.get<SMTPConfig>("smtp");
+const clientUri = config.get<string>("clientUri");
 
 const transporter = nodemailer.createTransport({
   pool: true,
@@ -38,7 +39,7 @@ export function sendVerificationEmail(user: User) {
       from: `Graphql TaskManager<${smtp.from}>`,
       to: email,
       subject: "Please verify your account",
-      text: `Id: ${id} | Code: ${verificationCode}`,
+      text: `${clientUri}/verify/${id}/${verificationCode}`,
     },
     (error, _) => {
       if (error) {
