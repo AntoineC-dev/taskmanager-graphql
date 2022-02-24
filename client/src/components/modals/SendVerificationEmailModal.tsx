@@ -31,6 +31,7 @@ export const SendVerificationEmailModal = () => {
       toast({ title: sendVerificationEmail, status: "success", isClosable: true });
       onCloseReset();
     },
+    onError: (_) => onCloseReset(),
   });
   const onSubmit = (variables: EmailFormInput) => sendEmail({ variables });
   return (
