@@ -1,4 +1,3 @@
-export { clearRefreshTokenCookie, createRefreshTokenCookie } from "./cookies.utils";
 export {
   checkAuthenticated,
   checkDuplicateEmail,

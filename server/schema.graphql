@@ -5,6 +5,7 @@
 type AuthPayload {
   accessToken: String!
   message: String!
+  refreshToken: String!
 }
 
 """

@@ -74,6 +74,7 @@ export interface NexusGenObjects {
   AuthPayload: { // root type
     accessToken: string; // String!
     message: string; // String!
+    refreshToken: string; // String!
   }
   Mutation: {};
   Query: {};
@@ -112,6 +113,7 @@ export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     accessToken: string; // String!
     message: string; // String!
+    refreshToken: string; // String!
   }
   Mutation: { // field return type
     createTask: NexusGenRootTypes['Task']; // Task!
@@ -158,6 +160,7 @@ export interface NexusGenFieldTypeNames {
   AuthPayload: { // field return type name
     accessToken: 'String'
     message: 'String'
+    refreshToken: 'String'
   }
   Mutation: { // field return type name
     createTask: 'Task'

@@ -45,7 +45,8 @@ export function deserializeTokens(req: Request, res: Response) {
     const decoded = verifyJwt(accessToken);
     if (decoded) return decoded;
   }
-  const refreshToken = extractRefreshTokenFromCookies(req.headers.cookie);
+  const refreshToken = req.get("x-refresh-token");
+  console.log("refreshToken:", refreshToken);
   if (refreshToken) {
     const decoded = verifyJwt(refreshToken);
     if (decoded) {
@@ -55,7 +56,6 @@ export function deserializeTokens(req: Request, res: Response) {
       console.log("accessToken refreshed");
       return decoded;
     }
-    clearRefreshTokenCookie(res);
   }
   return null;
 }
