@@ -19,10 +19,10 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [registerUser, { loading }] = useRegisterMutation({
-    onCompleted: (_) => {
+    onCompleted: (data) => {
       toast({
         title: "Account created",
-        description: "Please verify your email",
+        description: data,
         status: "success",
       });
       navigate(APP_ROUTES.login);
