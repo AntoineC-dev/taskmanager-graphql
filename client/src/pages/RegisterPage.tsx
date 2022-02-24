@@ -26,7 +26,7 @@ export const RegisterPage = () => {
         status: "success",
         isClosable: true,
       });
-      return navigate(APP_ROUTES.login);
+      navigate(APP_ROUTES.login);
     },
   });
   const onSubmit = ({ passwordConfirmation, ...rest }: RegisterFormInput) => {
