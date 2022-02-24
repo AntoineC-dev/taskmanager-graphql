@@ -1,9 +1,9 @@
-import { gql, QueryHookOptions, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { User } from "../../models";
 
 // ME_QUERY
-
-const ME_QUERY = gql`
+export type MeData = { me: Pick<User, "id" | "email" | "username"> };
+export const ME_QUERY = gql`
   query {
     me {
       id
@@ -12,8 +12,3 @@ const ME_QUERY = gql`
     }
   }
 `;
-
-type MeData = { me: Pick<User, "id" | "email" | "username"> };
-export function useMeQuery(options?: QueryHookOptions<MeData>) {
-  return useQuery<MeData>(ME_QUERY, options);
-}
