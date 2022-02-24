@@ -1,6 +1,8 @@
 import { ApolloLink, from, HttpLink } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { createStandaloneToast } from "@chakra-ui/react";
+import { getToken, logout, setToken } from "../utils";
+import { isAuthenticatedRV } from "./variables";
 
 const toast = createStandaloneToast();
 
@@ -12,15 +14,14 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      authorization: localStorage.getItem("token") ?? null,
-      "x-refresh-token": localStorage.getItem("refresh") ?? null,
+      authorization: getToken("token") ?? null,
+      "x-refresh-token": getToken("refresh") ?? null,
     },
   }));
   return forward(operation).map((data) => {
     const context = operation.getContext();
-    const newAccessToken = context.response.headers.get("x-access-token");
-    console.log("newAccessToken:", newAccessToken);
-    if (newAccessToken) localStorage.setItem("token", newAccessToken);
+    const newAccessToken = context.response.headers.get("Authorization");
+    if (newAccessToken) setToken("token", newAccessToken);
     return data;
   });
 });
@@ -28,8 +29,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 const logoutLink = onError(({ graphQLErrors, networkError }) => {
   graphQLErrors?.forEach(({ extensions, message }) => {
     if (extensions.code === "FORBIDDEN") {
-      localStorage.removeItem("token");
-      localStorage.removeItem("refresh");
+      if (isAuthenticatedRV()) logout();
       toast({ title: "Access forbidden", description: message, status: "error", isClosable: true });
     } else {
       toast({ description: message, status: "error", isClosable: true });
