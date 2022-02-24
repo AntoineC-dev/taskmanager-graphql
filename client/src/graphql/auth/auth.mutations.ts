@@ -24,16 +24,11 @@ export function useRegisterMutation(options?: UseMutationOptions<RegisterData, R
 
 // LOGIN_MUTATION
 
-type LoginData = Omit<User, "tasks">;
+type LoginData = { accessToken: string };
 const LOGIN_MUTATION = gql`
   mutation Login($email: EmailAddress!, $password: String!) {
     login(email: $email, password: $password) {
       accessToken
-      user {
-        id
-        username
-        email
-      }
     }
   }
 `;
