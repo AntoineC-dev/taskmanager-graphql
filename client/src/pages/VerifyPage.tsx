@@ -14,6 +14,7 @@ export const VerifyPage = () => {
         title: "Account verified",
         description: data,
         status: "success",
+        isClosable: true,
       });
       navigate(APP_ROUTES.login);
     },

@@ -25,6 +25,7 @@ export const RegisterPage = () => {
         title: "Account created",
         description: data.register,
         status: "success",
+        isClosable: true,
       });
       return navigate(APP_ROUTES.login);
     },
