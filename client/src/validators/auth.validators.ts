@@ -1,30 +1,26 @@
 import { object, string, TypeOf } from "zod";
+import { doNotMatch, invalidFormat, passwordTooLong, passwordTooShort, passwordTooWeak, requiredField } from "./errors";
 
 export const registerFormSchema = object({
-  username: string().nonempty({
-    message: "Username is required",
-  }),
-  email: string().email({
-    message: "Invalid email format",
-  }),
+  username: string().nonempty({ message: requiredField("username") }),
+  email: string().email({ message: invalidFormat("email") }),
   password: string()
-    .min(8, "Password must be at least 8 chars")
-    .max(26, "Password must be less than 26 chars")
-    .regex(RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])"), {
-      message: "Password too weak (1 lowercase, 1 uppercase, 1 number, 1 special char)",
-    }),
+    .min(8, passwordTooShort(8))
+    .max(20, passwordTooLong(20))
+    .regex(RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])"), { message: passwordTooWeak() }),
   passwordConfirmation: string(),
 }).refine((data) => data.password === data.passwordConfirmation, {
-  message: "Passwords do not match",
+  message: doNotMatch("passwords"),
   path: ["passwordConfirmation"],
 });
 
 export const loginFormSchema = object({
-  email: string().email({
-    message: "Invalid email format",
-  }),
-  password: string().nonempty({ message: "Password is required" }),
+  email: string().email({ message: invalidFormat("email") }),
+  password: string().nonempty({ message: requiredField("password") }),
 });
+
+export const emailFormSchema = object({ email: string().email({ message: invalidFormat("email") }) });
 
 export type RegisterFormInput = TypeOf<typeof registerFormSchema>;
 export type LoginFormInput = TypeOf<typeof loginFormSchema>;
+export type EmailFormInput = TypeOf<typeof emailFormSchema>;
