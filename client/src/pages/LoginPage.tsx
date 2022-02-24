@@ -1,4 +1,4 @@
-import { Button, Code, Heading, useToast, VStack } from "@chakra-ui/react";
+import { Button, Code, Heading, HStack, Text, useToast, VStack } from "@chakra-ui/react";
 import { LoginFormInput, loginFormSchema } from "../validators";
 import { HookFormInput, SendVerificationEmailModal } from "../components";
 import { useLoginMutation, useResolverForm } from "../hooks";
@@ -36,7 +36,10 @@ export const LoginPage = () => {
           Register Now
         </Button>
       </VStack>
-      <SendVerificationEmailModal />
+      <Text fontSize="sm">Need help?</Text>
+      <HStack>
+        <SendVerificationEmailModal />
+      </HStack>
     </VStack>
   );
 };
