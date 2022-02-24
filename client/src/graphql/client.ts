@@ -24,12 +24,14 @@ const logoutLink = onError(({ response }) => {
     toast({
       title: "Access forbidden",
       description: "This resource requires authorization",
+      status: "error",
     });
   }
   if (response?.errors) {
     response.errors.forEach((error) => {
       toast({
         description: error.message,
+        status: "error",
       });
     });
   }
