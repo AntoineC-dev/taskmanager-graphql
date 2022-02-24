@@ -10,10 +10,10 @@ export const VerifyPage = () => {
   useVerifyQuery(
     { id: id!, verificationCode: verificationCode! },
     {
-      onCompleted: (data) => {
+      onCompleted: ({ verify }) => {
         toast({
           title: "Account verified",
-          description: data.verify,
+          description: verify,
           status: "success",
           isClosable: true,
         });

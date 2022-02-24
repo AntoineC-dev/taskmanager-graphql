@@ -14,10 +14,9 @@ export const LoginPage = () => {
   });
   const toast = useToast();
   const [loginUser, { loading }] = useLoginMutation({
-    onCompleted: (data) => {
-      toast({ title: data.message, isClosable: true });
-      localStorage.setItem("token", data.accessToken);
-      console.log(data.accessToken);
+    onCompleted: ({ login }) => {
+      toast({ title: login.message, status: "success", isClosable: true });
+      localStorage.setItem("token", login.accessToken);
       // TODO: navigate to dashboard
     },
   });

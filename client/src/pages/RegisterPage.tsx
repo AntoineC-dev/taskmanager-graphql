@@ -19,11 +19,10 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [registerUser, { loading }] = useRegisterMutation({
-    onCompleted: (data) => {
-      console.log(data);
+    onCompleted: ({ register }) => {
       toast({
         title: "Account created",
-        description: data.register,
+        description: register,
         status: "success",
         isClosable: true,
       });
