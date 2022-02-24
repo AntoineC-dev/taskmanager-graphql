@@ -1,6 +1,8 @@
-import { gql, useMutation } from "@apollo/client";
+import { ApolloCache, DefaultContext, gql, MutationHookOptions, useMutation } from "@apollo/client";
 import { User } from "../../models";
 import { LoginFormInput, RegisterFormInput } from "../../validators";
+
+type UseMutationOptions<T, U> = Omit<MutationHookOptions<T, U, DefaultContext, ApolloCache<any>>, "variables">;
 
 // REGISTER_MUTATION
 
@@ -15,8 +17,9 @@ const REGISTER_MUTATION = gql`
     }
   }
 `;
-export function useRegisterMutation() {
-  return useMutation<RegisterData, RegisterVariables>(REGISTER_MUTATION);
+
+export function useRegisterMutation(options?: UseMutationOptions<RegisterData, RegisterVariables>) {
+  return useMutation<RegisterData, RegisterVariables>(REGISTER_MUTATION, options);
 }
 
 // LOGIN_MUTATION
@@ -35,6 +38,6 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-export function useLoginMutation() {
-  return useMutation<LoginData, LoginFormInput>(LOGIN_MUTATION);
+export function useLoginMutation(options?: UseMutationOptions<LoginData, LoginFormInput>) {
+  return useMutation<LoginData, LoginFormInput>(LOGIN_MUTATION, options);
 }
