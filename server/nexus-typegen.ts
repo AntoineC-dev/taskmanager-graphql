@@ -124,12 +124,12 @@ export interface NexusGenFieldTypes {
     resetPassword: string; // String!
     updateTask: NexusGenRootTypes['Task']; // Task!
     updateUser: NexusGenRootTypes['UpdateUserPayload']; // UpdateUserPayload!
-    verify: string; // String!
   }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
     sendPasswordResetCodeEmail: string; // String!
     sendVerificationEmail: string; // String!
+    verify: string; // String!
   }
   Task: { // field return type
     completed: boolean; // Boolean!
@@ -170,12 +170,12 @@ export interface NexusGenFieldTypeNames {
     resetPassword: 'String'
     updateTask: 'Task'
     updateUser: 'UpdateUserPayload'
-    verify: 'String'
   }
   Query: { // field return type name
     me: 'User'
     sendPasswordResetCodeEmail: 'String'
     sendVerificationEmail: 'String'
+    verify: 'String'
   }
   Task: { // field return type name
     completed: 'Boolean'
@@ -233,10 +233,6 @@ export interface NexusGenArgTypes {
       password?: NexusGenScalars['Password'] | null; // Password
       username?: NexusGenScalars['NonEmptyString'] | null; // NonEmptyString
     }
-    verify: { // args
-      id: string; // String!
-      verificationCode: string; // String!
-    }
   }
   Query: {
     sendPasswordResetCodeEmail: { // args
@@ -244,6 +240,10 @@ export interface NexusGenArgTypes {
     }
     sendVerificationEmail: { // args
       email: string; // String!
+    }
+    verify: { // args
+      id: string; // String!
+      verificationCode: string; // String!
     }
   }
 }

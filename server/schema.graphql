@@ -28,7 +28,6 @@ type Mutation {
   resetPassword(id: String!, password: Password!, passwordResetCode: String!): String!
   updateTask(description: NonEmptyString, id: String!, title: NonEmptyString): Task!
   updateUser(email: EmailAddress, password: Password, username: NonEmptyString): UpdateUserPayload!
-  verify(id: String!, verificationCode: String!): String!
 }
 
 """A string that cannot be passed as an empty value"""
@@ -43,6 +42,7 @@ type Query {
   me: User!
   sendPasswordResetCodeEmail(email: String!): String!
   sendVerificationEmail(email: String!): String!
+  verify(id: String!, verificationCode: String!): String!
 }
 
 type Task {
