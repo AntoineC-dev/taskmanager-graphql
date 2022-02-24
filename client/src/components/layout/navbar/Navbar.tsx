@@ -1,9 +1,10 @@
 import { Button, ButtonGroup, Divider, HStack, Spacer, StackProps, useToast } from "@chakra-ui/react";
-import { ColorModeSwitcher, RouterButton } from "../../components";
-import { APP_ROUTES } from "../../navigation";
+import { APP_ROUTES } from "../../../navigation";
 import { FaHome } from "react-icons/fa";
-import { useIsAuthenticated, useLogoutMutation } from "../../hooks";
-import { logout } from "../../utils";
+import { useIsAuthenticated, useLogoutMutation } from "../../../hooks";
+import { logout } from "../../../utils";
+import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import { RouterButton } from "../../router";
 
 export const Navbar = (props: StackProps) => {
   const isAuthenticated = useIsAuthenticated();

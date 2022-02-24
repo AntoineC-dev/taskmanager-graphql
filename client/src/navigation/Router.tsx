@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes as RouterRoutes, Route } from "react-router-dom";
 import { DashboardPage, HomePage, LoginPage, RegisterPage, VerifyPage } from "../pages";
 import { APP_ROUTES } from "./APP_ROUTES";
-import { ProtectedRoute, PublicRoute } from "../components";
-import { Layout } from "../containers";
+import { Layout, ProtectedRoute, PublicRoute } from "../components";
 
 export const Router = () => {
   return (
