@@ -20,12 +20,13 @@ export const RegisterPage = () => {
   const toast = useToast();
   const [registerUser, { loading }] = useRegisterMutation({
     onCompleted: (data) => {
+      console.log(data);
       toast({
         title: "Account created",
-        description: data,
+        description: data.register,
         status: "success",
       });
-      navigate(APP_ROUTES.login);
+      return navigate(APP_ROUTES.login);
     },
   });
   const onSubmit = ({ passwordConfirmation, ...rest }: RegisterFormInput) => {
