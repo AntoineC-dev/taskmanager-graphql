@@ -1,8 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import config from "config";
-import { extractRefreshTokenFromCookies } from "./cookies.utils";
-import { clearRefreshTokenCookie } from ".";
 
 const accessTokenTtl = config.get<string>("accessTokenTtl");
 const refreshTokenTtl = config.get<string>("refreshTokenTtl");
@@ -46,7 +44,6 @@ export function deserializeTokens(req: Request, res: Response) {
     if (decoded) return decoded;
   }
   const refreshToken = req.get("x-refresh-token");
-  console.log("refreshToken:", refreshToken);
   if (refreshToken) {
     const decoded = verifyJwt(refreshToken);
     if (decoded) {
