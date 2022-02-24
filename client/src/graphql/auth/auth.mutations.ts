@@ -24,6 +24,7 @@ const LOGIN_MUTATION = gql`
   mutation Login($email: EmailAddress!, $password: String!) {
     login(email: $email, password: $password) {
       accessToken
+      refreshToken
       message
     }
   }

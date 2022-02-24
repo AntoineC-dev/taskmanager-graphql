@@ -17,6 +17,7 @@ export const LoginPage = () => {
     onCompleted: ({ login }) => {
       toast({ title: login.message, status: "success", isClosable: true });
       localStorage.setItem("token", login.accessToken);
+      localStorage.setItem("refresh", login.refreshToken);
       // TODO: navigate to dashboard
     },
   });
