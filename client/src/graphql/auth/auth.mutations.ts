@@ -24,3 +24,11 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `;
+
+// LOGOUT_MUTATION
+export type LogoutData = { logout: string };
+export const LOGOUT_MUTATION = gql`
+  mutation Logout {
+    logout
+  }
+`;
