@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
-import { useIsAuthenticated } from "../hooks";
-import { APP_ROUTES } from "../navigation";
+import { useIsAuthenticated } from "../../hooks";
+import { APP_ROUTES } from "../../navigation";
 
 interface ProtectedRouteProps {
   Element: () => JSX.Element;
