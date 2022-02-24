@@ -4,6 +4,7 @@ import {
   checkDuplicateEmail,
   checkLoginCredentials,
   checkNotAuthenticated,
+  checkNotVerified,
   checkPasswordResetCode,
   checkUserVerified,
   checkVerificationCode,
@@ -34,7 +35,8 @@ export const AuthQuery = extendType({
       async resolve(_, args, ctx) {
         const message = "We have sent you a verification email";
         const user = await ctx.prisma.user.findUnique({ where: { email: args.email } });
-        if (!user || user.verified) return message;
+        if (!user) return message;
+        checkNotVerified(user);
         sendVerificationEmail(user);
         return message;
       },
