@@ -2,9 +2,7 @@ import { ApolloLink, from, HttpLink } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { createStandaloneToast } from "@chakra-ui/react";
 
-const toast = createStandaloneToast({
-  defaultOptions: { status: "error", isClosable: true },
-});
+const toast = createStandaloneToast();
 
 const httpLink = new HttpLink({
   uri: "http://localhost:3001",
@@ -32,12 +30,17 @@ const logoutLink = onError(({ graphQLErrors, networkError }) => {
     if (extensions.code === "FORBIDDEN") {
       localStorage.removeItem("token");
       localStorage.removeItem("refresh");
-      toast({ title: "Access forbidden", description: message });
+      toast({ title: "Access forbidden", description: message, status: "error", isClosable: true });
     } else {
-      toast({ description: message });
+      toast({ description: message, status: "error", isClosable: true });
     }
     if (networkError) {
-      toast({ title: "Network error", description: "Try again later or contact the support" });
+      toast({
+        title: "Network error",
+        description: "Try again later or contact the support",
+        status: "error",
+        isClosable: true,
+      });
     }
   });
 });
