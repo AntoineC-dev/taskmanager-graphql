@@ -1,12 +1,10 @@
 import { ApolloCache, DefaultContext, gql, MutationHookOptions, useMutation } from "@apollo/client";
-import { User } from "../../models";
 import { LoginFormInput, RegisterFormInput } from "../../validators";
 
 type UseMutationOptions<T, U> = Omit<MutationHookOptions<T, U, DefaultContext, ApolloCache<any>>, "variables">;
 
 // REGISTER_MUTATION
 
-type RegisterData = Partial<User>;
 type RegisterVariables = Omit<RegisterFormInput, "passwordConfirmation">;
 const REGISTER_MUTATION = gql`
   mutation Register($username: NonEmptyString!, $email: EmailAddress!, $password: Password!) {
@@ -18,13 +16,13 @@ const REGISTER_MUTATION = gql`
   }
 `;
 
-export function useRegisterMutation(options?: UseMutationOptions<RegisterData, RegisterVariables>) {
-  return useMutation<RegisterData, RegisterVariables>(REGISTER_MUTATION, options);
+export function useRegisterMutation(options?: UseMutationOptions<string, RegisterVariables>) {
+  return useMutation<string, RegisterVariables>(REGISTER_MUTATION, options);
 }
 
 // LOGIN_MUTATION
 
-type LoginData = { accessToken: string };
+type LoginData = { accessToken: string; message: string };
 const LOGIN_MUTATION = gql`
   mutation Login($email: EmailAddress!, $password: String!) {
     login(email: $email, password: $password) {
