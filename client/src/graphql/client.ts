@@ -6,29 +6,29 @@ const toast = createStandaloneToast();
 
 const httpLink = new HttpLink({
   uri: "http://localhost:3001",
-  credentials: "include",
 });
 const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      authorization: localStorage.getItem("token") || null,
+      authorization: localStorage.getItem("token") ?? null,
+      "x-refresh-token": localStorage.getItem("refresh") ?? null,
     },
   }));
   return forward(operation);
 });
 
 const logoutLink = onError(({ response }) => {
-  if (response?.extensions && response.extensions.code === "FORBIDDEN" && localStorage.getItem("token")) {
+  if (response?.extensions && response.extensions.code === "FORBIDDEN") {
     localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
     toast({
       title: "Access forbidden",
       description: "This resource requires authorization",
       status: "error",
       isClosable: true,
     });
-  }
-  if (response?.errors) {
+  } else if (response?.errors) {
     response.errors.forEach((error) => {
       toast({
         description: error.message,
@@ -42,4 +42,5 @@ const logoutLink = onError(({ response }) => {
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: concat(authMiddleware, logoutLink.concat(httpLink)),
+  credentials: "include",
 });
