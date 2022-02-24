@@ -1,5 +1,5 @@
 import { Heading, Spinner, Text, VStack } from "@chakra-ui/react";
-import { useMeQuery } from "../graphql";
+import { useMeQuery } from "../hooks";
 
 export const DashboardPage = () => {
   const { data, loading } = useMeQuery();

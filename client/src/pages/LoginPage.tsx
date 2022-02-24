@@ -1,10 +1,10 @@
 import { Button, Code, Heading, useToast, VStack } from "@chakra-ui/react";
 import { LoginFormInput, loginFormSchema } from "../validators";
 import { HookFormInput } from "../components";
-import { useLoginMutation } from "../graphql";
-import { useResolverForm } from "../hooks";
+import { useLoginMutation, useResolverForm } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import { APP_ROUTES } from "../navigation";
+import { login } from "../utils";
 
 export const LoginPage = () => {
   const { control, handleSubmit } = useResolverForm<LoginFormInput>({
@@ -17,10 +17,9 @@ export const LoginPage = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const [loginUser, { loading }] = useLoginMutation({
-    onCompleted: ({ login }) => {
-      toast({ title: login.message, status: "success", isClosable: true });
-      localStorage.setItem("token", login.accessToken);
-      localStorage.setItem("refresh", login.refreshToken);
+    onCompleted: ({ login: { message, ...tokens } }) => {
+      toast({ title: message, status: "success", isClosable: true });
+      login(tokens);
       navigate(APP_ROUTES.dashboard);
     },
   });

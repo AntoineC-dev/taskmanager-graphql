@@ -1,10 +1,9 @@
 import { Button, Code, Heading, useToast, VStack } from "@chakra-ui/react";
 import { RegisterFormInput, registerFormSchema } from "../validators";
 import { HookFormInput } from "../components";
-import { useRegisterMutation } from "../graphql";
 import { useNavigate } from "react-router-dom";
 import { APP_ROUTES } from "../navigation";
-import { useResolverForm } from "../hooks";
+import { useRegisterMutation, useResolverForm } from "../hooks";
 
 export const RegisterPage = () => {
   const { control, handleSubmit } = useResolverForm<RegisterFormInput>({

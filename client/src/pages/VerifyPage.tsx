@@ -1,6 +1,6 @@
 import { Center, Heading, Spinner, useToast, VStack } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useVerifyQuery } from "../graphql";
+import { useVerifyQuery } from "../hooks";
 import { APP_ROUTES } from "../navigation";
 
 export const VerifyPage = () => {
