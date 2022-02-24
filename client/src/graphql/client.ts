@@ -25,6 +25,7 @@ const logoutLink = onError(({ response }) => {
       title: "Access forbidden",
       description: "This resource requires authorization",
       status: "error",
+      isClosable: true,
     });
   }
   if (response?.errors) {
@@ -32,6 +33,7 @@ const logoutLink = onError(({ response }) => {
       toast({
         description: error.message,
         status: "error",
+        isClosable: true,
       });
     });
   }
