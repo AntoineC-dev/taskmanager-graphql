@@ -1,4 +1,4 @@
-import { Button, Code, Heading, VStack } from "@chakra-ui/react";
+import { Button, Code, Heading, useToast, VStack } from "@chakra-ui/react";
 import { LoginFormInput, loginFormSchema } from "../validators";
 import { HookFormInput } from "../components";
 import { useLoginMutation } from "../graphql";
@@ -12,17 +12,17 @@ export const LoginPage = () => {
     },
     schema: loginFormSchema,
   });
-  const [loginUser, { loading }] = useLoginMutation();
+  const toast = useToast();
+  const [loginUser, { loading }] = useLoginMutation({
+    onCompleted: (data) => {
+      toast({ title: "Successfully logged in" });
+      localStorage.setItem("token", data.accessToken);
+      console.log(data.accessToken);
+      // TODO: navigate to dashboard
+    },
+  });
   const onSubmit = (formData: LoginFormInput) => {
-    loginUser({
-      variables: formData,
-    }).then(({ data }) => {
-      if (data) {
-        console.log(data);
-        // TODO: navigate to login page
-        console.log("Navigate to dashboard page");
-      }
-    });
+    loginUser({ variables: formData });
   };
 
   return (
