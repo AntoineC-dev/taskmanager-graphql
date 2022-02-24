@@ -1,6 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import config from "config";
+import logger from "./logger.utils";
 
 const accessTokenTtl = config.get<string>("accessTokenTtl");
 const refreshTokenTtl = config.get<string>("refreshTokenTtl");
@@ -50,7 +51,7 @@ export function deserializeTokens(req: Request, res: Response) {
       const { sessionId, userId } = decoded;
       const newAccessToken = signJwt({ userId, sessionId }, "accessToken");
       res.setHeader("Authorization", newAccessToken);
-      console.log("accessToken refreshed");
+      logger.debug("accessToken refreshed");
       return decoded;
     }
   }
