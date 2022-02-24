@@ -5,21 +5,23 @@ import { APP_ROUTES } from "../navigation";
 
 export const VerifyPage = () => {
   const { id, verificationCode } = useParams();
-  const variables = { id: String(id), verificationCode: String(verificationCode) };
   const toast = useToast();
   const navigate = useNavigate();
-  useVerifyQuery(variables, {
-    onCompleted: (data) => {
-      toast({
-        title: "Account verified",
-        description: data,
-        status: "success",
-        isClosable: true,
-      });
-      navigate(APP_ROUTES.login);
-    },
-    onError: (_) => navigate(APP_ROUTES.login),
-  });
+  useVerifyQuery(
+    { id: id!, verificationCode: verificationCode! },
+    {
+      onCompleted: (data) => {
+        toast({
+          title: "Account verified",
+          description: data.verify,
+          status: "success",
+          isClosable: true,
+        });
+        navigate(APP_ROUTES.login);
+      },
+      onError: (_) => navigate(APP_ROUTES.login),
+    }
+  );
   return (
     <Center h="100vh">
       <VStack spacing={12}>
