@@ -12,6 +12,7 @@ export const VERIFY_QUERY = gql`
 `;
 
 // SEND_VERIFICATION_EMAIL_QUERY
+export type SendVericationEmailVariables = { email: string };
 export type SendVericationEmailData = { sendVerificationEmail: string };
 export const SEND_VERIFICATION_EMAIL_QUERY = gql`
   query ($email: String!) {
