@@ -8,11 +8,7 @@ type UseMutationOptions<T, U> = Omit<MutationHookOptions<T, U, DefaultContext, A
 type RegisterVariables = Omit<RegisterFormInput, "passwordConfirmation">;
 const REGISTER_MUTATION = gql`
   mutation Register($username: NonEmptyString!, $email: EmailAddress!, $password: Password!) {
-    register(username: $username, email: $email, password: $password) {
-      id
-      username
-      email
-    }
+    register(username: $username, email: $email, password: $password)
   }
 `;
 
@@ -27,6 +23,7 @@ const LOGIN_MUTATION = gql`
   mutation Login($email: EmailAddress!, $password: String!) {
     login(email: $email, password: $password) {
       accessToken
+      message
     }
   }
 `;
