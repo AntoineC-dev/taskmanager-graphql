@@ -3,6 +3,8 @@ import { LoginFormInput, loginFormSchema } from "../validators";
 import { HookFormInput } from "../components";
 import { useLoginMutation } from "../graphql";
 import { useResolverForm } from "../hooks";
+import { useNavigate } from "react-router-dom";
+import { APP_ROUTES } from "../navigation";
 
 export const LoginPage = () => {
   const { control, handleSubmit } = useResolverForm<LoginFormInput>({
@@ -13,12 +15,13 @@ export const LoginPage = () => {
     schema: loginFormSchema,
   });
   const toast = useToast();
+  const navigate = useNavigate();
   const [loginUser, { loading }] = useLoginMutation({
     onCompleted: ({ login }) => {
       toast({ title: login.message, status: "success", isClosable: true });
       localStorage.setItem("token", login.accessToken);
       localStorage.setItem("refresh", login.refreshToken);
-      // TODO: navigate to dashboard
+      navigate(APP_ROUTES.dashboard);
     },
   });
   const onSubmit = (formData: LoginFormInput) => {
