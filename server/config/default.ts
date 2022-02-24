@@ -3,6 +3,7 @@ dotenv.config();
 
 export default {
   port: process.env.SERVER_PORT,
+  clientUri: process.env.CLIENT_URI,
   accessTokenTtl: "15m",
   refreshTokenTtl: "1y",
   publicKey: process.env.PUBLIC_KEY,
