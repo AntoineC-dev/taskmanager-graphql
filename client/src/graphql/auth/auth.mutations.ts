@@ -1,4 +1,5 @@
 import { ApolloCache, DefaultContext, gql, MutationHookOptions, useMutation } from "@apollo/client";
+import { AuthPayload } from "../../models";
 import { LoginFormInput, RegisterFormInput } from "../../validators";
 
 type UseMutationOptions<T, U> = Omit<MutationHookOptions<T, U, DefaultContext, ApolloCache<any>>, "variables">;
@@ -18,7 +19,7 @@ export function useRegisterMutation(options?: UseMutationOptions<RegisterData, R
 
 // LOGIN_MUTATION
 
-type LoginData = { accessToken: string; message: string };
+type LoginData = { login: AuthPayload };
 const LOGIN_MUTATION = gql`
   mutation Login($email: EmailAddress!, $password: String!) {
     login(email: $email, password: $password) {
