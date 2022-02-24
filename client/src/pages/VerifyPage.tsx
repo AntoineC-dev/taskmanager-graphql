@@ -1,14 +1,30 @@
-import { Box, Center, Spinner } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { Center, Heading, Spinner, useToast, VStack } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useVerifyQuery } from "../graphql";
+import { APP_ROUTES } from "../navigation";
 
 export const VerifyPage = () => {
-  const params = useParams<{ id: string; verificationCode: string }>();
-  console.log(params);
+  const { id, verificationCode } = useParams();
+  const variables = { id: String(id), verificationCode: String(verificationCode) };
+  const toast = useToast();
+  const navigate = useNavigate();
+  useVerifyQuery(variables, {
+    onCompleted: (data) => {
+      toast({
+        title: "Account verified",
+        description: data,
+        status: "success",
+      });
+      navigate(APP_ROUTES.login);
+    },
+    onError: (_) => navigate(APP_ROUTES.login),
+  });
   return (
-    <Box minH="100vh">
-      <Center>
+    <Center h="100vh">
+      <VStack spacing={12}>
+        <Heading size="lg">Sending verification request...</Heading>
         <Spinner size="xl" thickness="4px" speed="0.8s" />
-      </Center>
-    </Box>
+      </VStack>
+    </Center>
   );
 };
