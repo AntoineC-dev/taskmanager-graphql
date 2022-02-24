@@ -4,7 +4,7 @@
 
 type AuthPayload {
   accessToken: String!
-  user: User!
+  message: String!
 }
 
 """
@@ -24,7 +24,7 @@ type Mutation {
   login(email: EmailAddress!, password: String!): AuthPayload!
   logout: String!
   logoutEverywhere: String!
-  register(email: EmailAddress!, password: Password!, username: NonEmptyString!): User!
+  register(email: EmailAddress!, password: Password!, username: NonEmptyString!): String!
   resetPassword(id: String!, password: Password!, passwordResetCode: String!): String!
   updateTask(description: NonEmptyString, id: String!, title: NonEmptyString): Task!
   updateUser(email: EmailAddress, password: Password, username: NonEmptyString): UpdateUserPayload!

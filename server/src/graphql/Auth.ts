@@ -20,9 +20,7 @@ export const AuthPayloadModel = objectType({
   name: "AuthPayload",
   definition(t) {
     t.nonNull.string("accessToken");
-    t.nonNull.field("user", {
-      type: "User",
-    });
+    t.nonNull.string("message");
   },
 });
 
@@ -79,7 +77,7 @@ export const AuthMutation = extendType({
   type: "Mutation",
   definition(t) {
     t.nonNull.field("register", {
-      type: "User",
+      type: "String",
       args: {
         username: nonNull("NonEmptyString"),
         email: nonNull("EmailAddress"),
@@ -87,6 +85,7 @@ export const AuthMutation = extendType({
       },
       async resolve(_, args, ctx) {
         const { email, password, username } = args;
+        const message = "We have sent you a verification email";
         await checkDuplicateEmail(ctx, email);
         const hash = await hashPwd(password);
         const user = await ctx.prisma.user.create({
@@ -97,7 +96,7 @@ export const AuthMutation = extendType({
           },
         });
         sendVerificationEmail(user);
-        return user;
+        return message;
       },
     });
     t.nonNull.field("login", {
@@ -107,6 +106,7 @@ export const AuthMutation = extendType({
         password: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
+        const message = "Successfully logged in";
         checkNotAuthenticated(ctx);
         const user = await checkLoginCredentials(ctx, args);
         checkUserVerified(user);
@@ -118,7 +118,7 @@ export const AuthMutation = extendType({
         });
         const { accessToken, refreshToken } = signTokens({ userId: user.id, sessionId: session.id });
         createRefreshTokenCookie(ctx.res, refreshToken);
-        return { accessToken, user };
+        return { accessToken, message };
       },
     });
     t.nonNull.field("logout", {

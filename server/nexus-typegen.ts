@@ -73,7 +73,7 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   AuthPayload: { // root type
     accessToken: string; // String!
-    user: NexusGenRootTypes['User']; // User!
+    message: string; // String!
   }
   Mutation: {};
   Query: {};
@@ -111,7 +111,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     accessToken: string; // String!
-    user: NexusGenRootTypes['User']; // User!
+    message: string; // String!
   }
   Mutation: { // field return type
     createTask: NexusGenRootTypes['Task']; // Task!
@@ -120,7 +120,7 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     logout: string; // String!
     logoutEverywhere: string; // String!
-    register: NexusGenRootTypes['User']; // User!
+    register: string; // String!
     resetPassword: string; // String!
     updateTask: NexusGenRootTypes['Task']; // Task!
     updateUser: NexusGenRootTypes['UpdateUserPayload']; // UpdateUserPayload!
@@ -157,7 +157,7 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   AuthPayload: { // field return type name
     accessToken: 'String'
-    user: 'User'
+    message: 'String'
   }
   Mutation: { // field return type name
     createTask: 'Task'
@@ -166,7 +166,7 @@ export interface NexusGenFieldTypeNames {
     login: 'AuthPayload'
     logout: 'String'
     logoutEverywhere: 'String'
-    register: 'User'
+    register: 'String'
     resetPassword: 'String'
     updateTask: 'Task'
     updateUser: 'UpdateUserPayload'
