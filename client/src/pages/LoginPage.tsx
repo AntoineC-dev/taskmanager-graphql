@@ -15,7 +15,7 @@ export const LoginPage = () => {
   const toast = useToast();
   const [loginUser, { loading }] = useLoginMutation({
     onCompleted: (data) => {
-      toast({ title: "Successfully logged in" });
+      toast({ title: data.message });
       localStorage.setItem("token", data.accessToken);
       console.log(data.accessToken);
       // TODO: navigate to dashboard
