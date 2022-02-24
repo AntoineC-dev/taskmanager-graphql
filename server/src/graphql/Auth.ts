@@ -58,6 +58,20 @@ export const AuthQuery = extendType({
         return message;
       },
     });
+    t.nonNull.field("verify", {
+      type: "String",
+      args: {
+        id: nonNull(stringArg()),
+        verificationCode: nonNull(stringArg()),
+      },
+      async resolve(parent, args, ctx) {
+        await checkVerificationCode(ctx, args);
+        await ctx.prisma.user.update({ where: { id: args.id }, data: { verified: true } });
+        const verificationCode = generateUniqueIdentifier();
+        await ctx.prisma.user.update({ where: { id: args.id }, data: { verificationCode } });
+        return "Account successfully verified";
+      },
+    });
   },
 });
 
@@ -84,20 +98,6 @@ export const AuthMutation = extendType({
         });
         sendVerificationEmail(user);
         return user;
-      },
-    });
-    t.nonNull.field("verify", {
-      type: "String",
-      args: {
-        id: nonNull(stringArg()),
-        verificationCode: nonNull(stringArg()),
-      },
-      async resolve(parent, args, ctx) {
-        await checkVerificationCode(ctx, args);
-        await ctx.prisma.user.update({ where: { id: args.id }, data: { verified: true } });
-        const verificationCode = generateUniqueIdentifier();
-        await ctx.prisma.user.update({ where: { id: args.id }, data: { verificationCode } });
-        return "Account successfully verified";
       },
     });
     t.nonNull.field("login", {
