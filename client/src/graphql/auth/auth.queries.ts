@@ -4,14 +4,15 @@ import { gql, QueryHookOptions, useQuery } from "@apollo/client";
 
 export type VerifyVariables = { id: string; verificationCode: string };
 const VERIFY_QUERY = gql`
-  query ($verifyId: String!, $verificationCode: String!) {
-    verify(id: $verifyId, verificationCode: $verificationCode)
+  query ($id: String!, $verificationCode: String!) {
+    verify(id: $id, verificationCode: $verificationCode)
   }
 `;
 
-type UseVerifyQueryOptions = Omit<QueryHookOptions<string, VerifyVariables>, "variables">;
+type VerifyData = { verify: string };
+type UseVerifyQueryOptions = Omit<QueryHookOptions<VerifyData, VerifyVariables>, "variables">;
 export function useVerifyQuery(variables: VerifyVariables, options?: UseVerifyQueryOptions) {
-  return useQuery<string, VerifyVariables>(VERIFY_QUERY, {
+  return useQuery<VerifyData, VerifyVariables>(VERIFY_QUERY, {
     variables,
     ...(options && options),
   });
