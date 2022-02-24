@@ -16,23 +16,20 @@ export const RegisterPage = () => {
     },
     schema: registerFormSchema,
   });
-  const [registerUser, { loading }] = useRegisterMutation();
   const navigate = useNavigate();
   const toast = useToast();
-  const onSubmit = (formData: RegisterFormInput) => {
-    const { passwordConfirmation, ...rest } = formData;
-    registerUser({
-      variables: rest,
-    }).then(({ data }) => {
-      if (data) {
-        toast({
-          title: "Account created",
-          description: "Please verify your email",
-          status: "success",
-        });
-        navigate(APP_ROUTES.login);
-      }
-    });
+  const [registerUser, { loading }] = useRegisterMutation({
+    onCompleted: (_) => {
+      toast({
+        title: "Account created",
+        description: "Please verify your email",
+        status: "success",
+      });
+      navigate(APP_ROUTES.login);
+    },
+  });
+  const onSubmit = ({ passwordConfirmation, ...rest }: RegisterFormInput) => {
+    registerUser({ variables: rest });
   };
 
   return (
