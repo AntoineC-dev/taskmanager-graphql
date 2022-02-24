@@ -52,6 +52,12 @@ export function checkUserVerified(user: User) {
   }
 }
 
+export function checkNotVerified(user: User) {
+  if (user.verified) {
+    throw new AuthenticationError("Your email is already verified");
+  }
+}
+
 export async function checkVerificationCode(
   ctx: Context,
   { id, verificationCode }: { id: string; verificationCode: string }
