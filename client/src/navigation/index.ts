@@ -1,2 +1,2 @@
-export { APP_ROUTES, GITHUB_LINK } from "./APP_ROUTES";
-export { Router } from "./Router";
+export * from "./APP_ROUTES";
+export * from "./Router";

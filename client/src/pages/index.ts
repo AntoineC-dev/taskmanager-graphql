@@ -1,5 +1,5 @@
-export { DashboardPage } from "./DashboardPage";
-export { HomePage } from "./HomePage";
-export { LoginPage } from "./LoginPage";
-export { RegisterPage } from "./RegisterPage";
-export { VerifyPage } from "./VerifyPage";
+export * from "./DashboardPage";
+export * from "./HomePage";
+export * from "./LoginPage";
+export * from "./RegisterPage";
+export * from "./VerifyPage";

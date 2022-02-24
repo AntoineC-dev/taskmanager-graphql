@@ -1,3 +1,3 @@
-export type { AuthPayload } from "./Authpayload";
-export type { Task } from "./Task";
-export type { User } from "./User";
+export * from "./Authpayload";
+export * from "./Task";
+export * from "./User";
