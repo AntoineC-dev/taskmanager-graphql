@@ -10,3 +10,11 @@ export const VERIFY_QUERY = gql`
     verify(id: $id, verificationCode: $verificationCode)
   }
 `;
+
+// SEND_VERIFICATION_EMAIL_QUERY
+export type SendVericationEmailData = { sendVerificationEmail: string };
+export const SEND_VERIFICATION_EMAIL_QUERY = gql`
+  query ($email: String!) {
+    sendVerificationEmail(email: $email)
+  }
+`;
