@@ -59,7 +59,7 @@ export function sendPasswordResetCodeEmail(user: User) {
       from: `Graphql TaskManager<${smtp.from}>`,
       to: email,
       subject: "Password reset code",
-      text: `${clientUri}/reset-password/${id}/${passwordResetCode}`,
+      text: `${clientUri}/password-reset/${id}/${passwordResetCode}`,
     },
     (error, _) => {
       if (error) {
