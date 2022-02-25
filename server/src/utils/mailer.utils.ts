@@ -53,13 +53,13 @@ export function sendVerificationEmail(user: User) {
 }
 
 export function sendPasswordResetCodeEmail(user: User) {
-  const { email, passwordResetCode } = user;
+  const { id, email, passwordResetCode } = user;
   transporter.sendMail(
     {
       from: `Graphql TaskManager<${smtp.from}>`,
       to: email,
       subject: "Password reset code",
-      text: `Code: ${passwordResetCode}`,
+      text: `${clientUri}/reset-password/${id}/${passwordResetCode}`,
     },
     (error, _) => {
       if (error) {
