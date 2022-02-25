@@ -10,7 +10,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useResolverForm, useSendVerificationEmailLazyQuery } from "../../hooks";
+import { useResolverForm, useSendPasswordResetCodeEmailLazyQuery } from "../../hooks";
 import { EmailFormInput, emailFormSchema } from "../../validators";
 import { HookFormInput } from "../HookFormInput";
 
@@ -25,9 +25,9 @@ export const SendPasswordResetCodeEmailModal = () => {
     onClose();
   };
   const toast = useToast();
-  const [sendEmail] = useSendVerificationEmailLazyQuery({
-    onCompleted: ({ sendVerificationEmail }) => {
-      toast({ title: sendVerificationEmail, status: "success", isClosable: true });
+  const [sendEmail] = useSendPasswordResetCodeEmailLazyQuery({
+    onCompleted: ({ sendPasswordResetCodeEmail }) => {
+      toast({ title: sendPasswordResetCodeEmail, status: "success", isClosable: true });
       onCloseReset();
     },
     onError: (_) => onCloseReset(),
