@@ -21,6 +21,18 @@ export const loginFormSchema = object({
 
 export const emailFormSchema = object({ email: string().email({ message: invalidFormat("email") }) });
 
+export const passwordFormSchema = object({
+  password: string()
+    .min(8, passwordTooShort(8))
+    .max(20, passwordTooLong(20))
+    .regex(RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])"), { message: passwordTooWeak() }),
+  passwordConfirmation: string(),
+}).refine((data) => data.password === data.passwordConfirmation, {
+  message: doNotMatch("passwords"),
+  path: ["passwordConfirmation"],
+});
+
 export type RegisterFormInput = TypeOf<typeof registerFormSchema>;
 export type LoginFormInput = TypeOf<typeof loginFormSchema>;
 export type EmailFormInput = TypeOf<typeof emailFormSchema>;
+export type PasswordFormInput = TypeOf<typeof passwordFormSchema>;
