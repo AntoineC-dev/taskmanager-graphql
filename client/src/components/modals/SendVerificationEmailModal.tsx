@@ -10,7 +10,6 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { EmailIcon } from "@chakra-ui/icons";
 import { useResolverForm, useSendVerificationEmailLazyQuery } from "../../hooks";
 import { EmailFormInput, emailFormSchema } from "../../validators";
 import { HookFormInput } from "../HookFormInput";
@@ -36,7 +35,7 @@ export const SendVerificationEmailModal = () => {
   const onSubmit = (variables: EmailFormInput) => sendEmail({ variables });
   return (
     <>
-      <Button onClick={onOpen} variant="ghost" size="sm" rightIcon={<EmailIcon />}>
+      <Button onClick={onOpen} variant="ghost" size="sm">
         Send verification email
       </Button>
       <Modal isOpen={isOpen} onClose={onCloseReset}>
