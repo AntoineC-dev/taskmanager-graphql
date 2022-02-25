@@ -33,23 +33,25 @@ export const RegisterPage = () => {
   };
 
   return (
-    <VStack as="form" maxW="container.sm" w="100%" justifySelf="center" spacing={4} onSubmit={handleSubmit(onSubmit)}>
+    <VStack maxW="container.sm" w="100%" justifySelf="center" spacing={4}>
       <Heading>Create New Account</Heading>
       <Code fontSize="md" px="2">
         GQLMutation: REGISTER_MUTATION
       </Code>
-      <HookFormInput control={control} name="username" />
-      <HookFormInput control={control} name="email" type="email" />
-      <HookFormInput control={control} name="password" type="password" />
-      <HookFormInput
-        control={control}
-        name="passwordConfirmation"
-        type="password"
-        placeholder="Confirm your password here..."
-      />
-      <Button type="submit" disabled={loading}>
-        Register Now
-      </Button>
+      <VStack as="form" w="100%" onSubmit={handleSubmit(onSubmit)}>
+        <HookFormInput control={control} name="username" />
+        <HookFormInput control={control} name="email" type="email" />
+        <HookFormInput control={control} name="password" type="password" />
+        <HookFormInput
+          control={control}
+          name="passwordConfirmation"
+          type="password"
+          placeholder="Confirm your password here..."
+        />
+        <Button type="submit" disabled={loading}>
+          Register Now
+        </Button>
+      </VStack>
     </VStack>
   );
 };
