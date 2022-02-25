@@ -3,6 +3,7 @@ export const APP_ROUTES = {
   register: "/register",
   login: "/login",
   verify: "/verify/:id/:verificationCode",
+  passwordReset: "/password-reset/:id/:passwordResetCode",
   dashboard: "/dashboard",
 };
 
