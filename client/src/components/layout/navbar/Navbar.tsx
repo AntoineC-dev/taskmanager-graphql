@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Divider, HStack, Spacer, StackProps, useToast } from "@chakra-ui/react";
+import { Button, ButtonGroup, HStack, Spacer, StackProps, useToast } from "@chakra-ui/react";
 import { APP_ROUTES } from "../../../navigation";
 import { FaHome } from "react-icons/fa";
 import { useIsAuthenticated, useLogoutMutation } from "../../../hooks";
@@ -17,7 +17,7 @@ export const Navbar = (props: StackProps) => {
   });
   return (
     <HStack {...props}>
-      <ButtonGroup variant="ghost" size="sm" flexGrow={1}>
+      <ButtonGroup variant="ghost" flexGrow={1}>
         <RouterButton to={APP_ROUTES.home} leftIcon={<FaHome />}>
           Home
         </RouterButton>
@@ -36,7 +36,6 @@ export const Navbar = (props: StackProps) => {
           </>
         )}
       </ButtonGroup>
-      <Divider h="6" orientation="vertical" />
       <ColorModeSwitcher />
     </HStack>
   );
