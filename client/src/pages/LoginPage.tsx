@@ -1,6 +1,6 @@
 import { Button, Code, Heading, HStack, StackDivider, useToast, VStack } from "@chakra-ui/react";
 import { LoginFormInput, loginFormSchema } from "../validators";
-import { HookFormInput, SendVerificationEmailModal } from "../components";
+import { HookFormInput, SendPasswordResetCodeEmailModal, SendVerificationEmailModal } from "../components";
 import { useLoginMutation, useResolverForm } from "../hooks";
 import { login } from "../utils";
 
@@ -38,7 +38,7 @@ export const LoginPage = () => {
       </VStack>
       <HStack divider={<StackDivider />}>
         <SendVerificationEmailModal />
-        <SendVerificationEmailModal />
+        <SendPasswordResetCodeEmailModal />
       </HStack>
     </VStack>
   );
