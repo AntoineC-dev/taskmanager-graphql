@@ -9,8 +9,10 @@ export const Router = () => {
       <RouterRoutes>
         <Route path={APP_ROUTES.home} element={<Layout />}>
           <Route index element={<HomePage />} />
+          {/** Public routes */}
           <Route path={APP_ROUTES.register} element={<PublicRoute Element={RegisterPage} />} />
           <Route path={APP_ROUTES.login} element={<PublicRoute Element={LoginPage} />} />
+          {/** Protected routes */}
           <Route path={APP_ROUTES.dashboard} element={<ProtectedRoute Element={DashboardPage} />} />
         </Route>
         <Route path={APP_ROUTES.verify} element={<VerifyPage />} />
