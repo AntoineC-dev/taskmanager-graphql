@@ -1,14 +1,20 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import { Navbar } from "./navbar/Navbar";
+import { Footer } from "./footer/Footer";
 
 export const Layout = () => {
   return (
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
+    <Grid minH="100vh" templateRows="auto 1fr auto" p={4} gap={8}>
+      <GridItem rowSpan={1}>
         <Navbar alignSelf="start" />
+      </GridItem>
+      <GridItem rowSpan={1}>
         <Outlet />
-      </Grid>
-    </Box>
+      </GridItem>
+      <GridItem rowSpan={1}>
+        <Footer align="center" />
+      </GridItem>
+    </Grid>
   );
 };
