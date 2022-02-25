@@ -24,5 +24,4 @@ server
   })
   .catch((error) => {
     logger.error("Server Error", error);
-    process.exit(1);
   });
