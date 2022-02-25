@@ -16,7 +16,13 @@ export const server = new ApolloServer({
 
 const port = config.get<string>("port");
 
-server.listen({ port }).then(({ url }) => {
-  logger.info(`Server listening at ${url}`);
-  verifySMTP();
-});
+server
+  .listen({ port })
+  .then(({ url }) => {
+    logger.info(`Server listening at ${url}`);
+    verifySMTP();
+  })
+  .catch((error) => {
+    logger.error("Server Error", error);
+    process.exit(1);
+  });
