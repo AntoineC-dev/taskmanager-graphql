@@ -32,3 +32,12 @@ export const LOGOUT_MUTATION = gql`
     logout
   }
 `;
+
+// RESET_PASSWORD_MUTATION
+export type ResetPasswordVariables = { id: string; password: string; passwordResetCode: string };
+export type ResetPasswordData = { resetPassword: string };
+export const RESET_PASSWORD_MUTATION = gql`
+  mutation ResetPassword($id: String!, $password: Password!, $passwordResetCode: String!) {
+    resetPassword(id: $id, password: $password, passwordResetCode: $passwordResetCode)
+  }
+`;
