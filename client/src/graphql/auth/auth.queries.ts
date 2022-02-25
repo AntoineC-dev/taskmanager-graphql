@@ -19,3 +19,12 @@ export const SEND_VERIFICATION_EMAIL_QUERY = gql`
     sendVerificationEmail(email: $email)
   }
 `;
+
+// SEND_PASSWORD_RESET_CODE_EMAIL_QUERY
+export type SendPasswordResetCodeEmailVariables = { email: string };
+export type SendPasswordResetCodeEmailData = { sendPasswordResetCodeEmail: string };
+export const SEND_PASSWORD_RESET_CODE_EMAIL_QUERY = gql`
+  query ($email: String!) {
+    sendPasswordResetCodeEmail(email: $email)
+  }
+`;
