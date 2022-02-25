@@ -1,4 +1,4 @@
-import { Button, Code, Heading, useToast, VStack } from "@chakra-ui/react";
+import { Button, Center, Code, Heading, useToast, VStack } from "@chakra-ui/react";
 import { RegisterFormInput, registerFormSchema } from "../validators";
 import { HookFormInput } from "../components";
 import { useNavigate } from "react-router-dom";
@@ -33,25 +33,27 @@ export const RegisterPage = () => {
   };
 
   return (
-    <VStack maxW="container.sm" w="100%" justifySelf="center" spacing={4}>
-      <Heading>Create New Account</Heading>
-      <Code fontSize="md" px="2">
-        GQLMutation: REGISTER_MUTATION
-      </Code>
-      <VStack as="form" w="100%" onSubmit={handleSubmit(onSubmit)}>
-        <HookFormInput control={control} name="username" />
-        <HookFormInput control={control} name="email" type="email" />
-        <HookFormInput control={control} name="password" type="password" />
-        <HookFormInput
-          control={control}
-          name="passwordConfirmation"
-          type="password"
-          placeholder="Confirm your password here..."
-        />
-        <Button type="submit" disabled={loading}>
-          Register Now
-        </Button>
+    <Center h="100%">
+      <VStack maxW="container.sm" w="100%" justifySelf="center" spacing={4}>
+        <Heading>Create New Account</Heading>
+        <Code fontSize="md" px="2">
+          GQLMutation: REGISTER_MUTATION
+        </Code>
+        <VStack as="form" w="100%" onSubmit={handleSubmit(onSubmit)}>
+          <HookFormInput control={control} name="username" />
+          <HookFormInput control={control} name="email" type="email" />
+          <HookFormInput control={control} name="password" type="password" />
+          <HookFormInput
+            control={control}
+            name="passwordConfirmation"
+            type="password"
+            placeholder="Confirm your password here..."
+          />
+          <Button type="submit" disabled={loading}>
+            Register Now
+          </Button>
+        </VStack>
       </VStack>
-    </VStack>
+    </Center>
   );
 };
