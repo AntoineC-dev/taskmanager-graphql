@@ -27,7 +27,7 @@ export const PasswordResetPage = () => {
 
   return (
     <Center h="100vh">
-      <VStack as="form" maxW="container.sm" w="100%" onSubmit={handleSubmit(onSubmit)} spacing={12}>
+      <VStack as="form" maxW="container.sm" w="100%" onSubmit={handleSubmit(onSubmit)} spacing={4}>
         <Heading size="lg">Choose a new password</Heading>
         <HookFormInput control={control} name="password" type="password" />
         <HookFormInput
