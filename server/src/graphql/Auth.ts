@@ -29,9 +29,7 @@ export const AuthQuery = extendType({
   definition(t) {
     t.nonNull.field("verificationEmail", {
       type: "String",
-      args: {
-        email: nonNull(stringArg()),
-      },
+      args: { email: nonNull(stringArg()) },
       async resolve(_, args, ctx) {
         const message = "We have sent you a verification email";
         const user = await ctx.prisma.user.findUnique({ where: { email: args.email } });
@@ -63,11 +61,9 @@ export const AuthQuery = extendType({
         id: nonNull(stringArg()),
         verificationCode: nonNull(stringArg()),
       },
-      async resolve(parent, args, ctx) {
+      async resolve(_, args, ctx) {
         await checkVerificationCode(ctx, args);
         await ctx.prisma.user.update({ where: { id: args.id }, data: { verified: true } });
-        const verificationCode = generateUniqueIdentifier();
-        await ctx.prisma.user.update({ where: { id: args.id }, data: { verificationCode } });
         return "Account successfully verified";
       },
     });
@@ -89,13 +85,7 @@ export const AuthMutation = extendType({
         const message = "We have sent you a verification email";
         await checkDuplicateEmail(ctx, email);
         const hash = await hashPwd(password);
-        const user = await ctx.prisma.user.create({
-          data: {
-            email,
-            username,
-            password: hash,
-          },
-        });
+        const user = await ctx.prisma.user.create({ data: { email, username, password: hash } });
         sendVerificationEmail(user);
         return message;
       },
@@ -112,10 +102,7 @@ export const AuthMutation = extendType({
         const user = await checkLoginCredentials(ctx, args);
         checkUserVerified(user);
         const session = await ctx.prisma.session.create({
-          data: {
-            userAgent: ctx.userAgent ?? "",
-            userId: user.id,
-          },
+          data: { userAgent: ctx.userAgent, userId: user.id },
         });
         const { accessToken, refreshToken } = signTokens({ userId: user.id, sessionId: session.id });
         return { accessToken, refreshToken, message };
@@ -140,17 +127,23 @@ export const AuthMutation = extendType({
         const { id, password, passwordResetCode } = args;
         await checkPasswordResetCode(ctx, { id, passwordResetCode });
         const hash = await hashPwd(password);
-        await ctx.prisma.user.update({ where: { id }, data: { password: hash, passwordResetCode: null } });
-        await ctx.prisma.session.updateMany({ where: { userId: id }, data: { valid: false } });
-        return "Password successfully updated";
+        await ctx.prisma.user.update({
+          where: { id },
+          data: {
+            password: hash,
+            passwordResetCode: null,
+            sessions: { updateMany: { where: { valid: true }, data: { valid: false } } },
+          },
+        });
+        return "We logged you out from all active sessions";
       },
     });
     t.nonNull.field("logoutEverywhere", {
       type: "String",
       async resolve(_, __, ctx) {
         const { userId } = checkAuthenticated(ctx);
-        await ctx.prisma.session.updateMany({ where: { userId }, data: { valid: false } });
-        return "All sessions closed";
+        await ctx.prisma.session.updateMany({ where: { userId, valid: true }, data: { valid: false } });
+        return "We logged you out from all active sessions";
       },
     });
   },
