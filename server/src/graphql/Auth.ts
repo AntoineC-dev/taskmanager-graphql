@@ -64,7 +64,7 @@ export const AuthQuery = extendType({
       async resolve(_, args, ctx) {
         await checkVerificationCode(ctx, args);
         await ctx.prisma.user.update({ where: { id: args.id }, data: { verified: true } });
-        return "Account successfully verified";
+        return "You can now login to your account";
       },
     });
   },
@@ -97,9 +97,9 @@ export const AuthMutation = extendType({
         password: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
-        const message = "Successfully logged in";
         checkNotAuthenticated(ctx);
         const user = await checkLoginCredentials(ctx, args);
+        const message = `Hi ${user.username}, how are you today?`;
         checkUserVerified(user);
         const session = await ctx.prisma.session.create({
           data: { userAgent: ctx.userAgent, userId: user.id },
@@ -113,7 +113,7 @@ export const AuthMutation = extendType({
       async resolve(_, __, ctx) {
         const { sessionId } = checkAuthenticated(ctx);
         await ctx.prisma.session.update({ where: { id: sessionId }, data: { valid: false } });
-        return "Successfully logged out";
+        return "We already miss you. See you soon!";
       },
     });
     t.nonNull.field("resetPassword", {
