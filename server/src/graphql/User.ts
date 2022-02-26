@@ -1,5 +1,5 @@
-import { extendType, objectType } from "nexus";
-import { checkAuthenticated, comparePwd, generateUniqueIdentifier, hashPwd, sendVerificationEmail } from "../utils";
+import { extendType, nonNull, objectType } from "nexus";
+import { checkAuthenticated, generateUniqueIdentifier, hashPwd, sendVerificationEmail } from "../utils";
 
 export const UserModel = objectType({
   name: "User",
@@ -23,9 +23,9 @@ export const UserQuery = extendType({
   definition(t) {
     t.nonNull.field("me", {
       type: "User",
-      async resolve(_, __, ctx) {
+      resolve(_, __, ctx) {
         const { userId } = checkAuthenticated(ctx);
-        return await ctx.prisma.user.findUnique({ where: { id: userId }, rejectOnNotFound: true });
+        return ctx.prisma.user.findUnique({ where: { id: userId }, rejectOnNotFound: true });
       },
     });
   },
@@ -34,49 +34,44 @@ export const UserQuery = extendType({
 export const UserMutation = extendType({
   type: "Mutation",
   definition(t) {
-    t.nonNull.field("updateUser", {
-      type: "UpdateUserPayload",
-      args: {
-        username: "NonEmptyString",
-        email: "EmailAddress",
-        password: "Password",
-      },
-      async resolve(_, args, ctx) {
+    t.nonNull.field("updateUsername", {
+      type: "User",
+      args: { username: nonNull("NonEmptyString") },
+      resolve(_, { username }, ctx) {
         const { userId } = checkAuthenticated(ctx);
-        const user = await ctx.prisma.user.findUnique({ where: { id: userId }, rejectOnNotFound: true });
-        const { email, password, username } = args;
-        // Check updates
-        const usernameUpdated = username && user.username !== username;
-        const emailUpdated = email && user.email !== email;
-        const passwordUpdated = password && !(await comparePwd(user.password, password));
-        const update = {
-          username: usernameUpdated ? username : undefined,
-          password: passwordUpdated ? await hashPwd(password) : undefined,
-          email: emailUpdated ? email : undefined,
-          verified: emailUpdated ? false : undefined,
-          verificationCode: emailUpdated ? generateUniqueIdentifier() : undefined,
-        };
-        const updatedUser = await ctx.prisma.user.update({ where: { id: userId }, data: update });
-        if (emailUpdated || passwordUpdated) {
-          await ctx.prisma.session.updateMany({ where: { userId }, data: { valid: false } });
-          if (emailUpdated) sendVerificationEmail(updatedUser);
-          return {
-            message: "Profile updated. Please login with your new credentials",
-          };
-        }
-        return {
-          user: updatedUser,
-          message: "Profile updated",
-        };
+        return ctx.prisma.user.update({ where: { id: userId }, data: { username } });
       },
     });
-  },
-});
-
-export const UpdateUserPayload = objectType({
-  name: "UpdateUserPayload",
-  definition(t) {
-    t.field("user", { type: "User" });
-    t.nonNull.string("message");
+    t.nonNull.field("updateEmail", {
+      type: "String",
+      args: { email: nonNull("EmailAddress") },
+      async resolve(_, { email }, ctx) {
+        const { userId } = checkAuthenticated(ctx);
+        const verificationCode = generateUniqueIdentifier();
+        const updatedUser = await ctx.prisma.user.update({
+          where: { id: userId },
+          data: {
+            email,
+            verificationCode,
+            sessions: { updateMany: { where: { valid: true }, data: { valid: false } } },
+          },
+        });
+        sendVerificationEmail(updatedUser);
+        return "We have sent you a verification email";
+      },
+    });
+    t.nonNull.field("updatePassword", {
+      type: "String",
+      args: { password: nonNull("Password") },
+      async resolve(_, args, ctx) {
+        const { userId } = checkAuthenticated(ctx);
+        const password = await hashPwd(args.password);
+        await ctx.prisma.user.update({
+          where: { id: userId },
+          data: { password, sessions: { updateMany: { where: { valid: true }, data: { valid: false } } } },
+        });
+        return "We logged you out from all active sessions";
+      },
+    });
   },
 });

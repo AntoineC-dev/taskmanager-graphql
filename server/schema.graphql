@@ -27,8 +27,10 @@ type Mutation {
   logoutEverywhere: String!
   register(email: EmailAddress!, password: Password!, username: NonEmptyString!): String!
   resetPassword(id: String!, password: Password!, passwordResetCode: String!): String!
+  updateEmail(email: EmailAddress!): String!
+  updatePassword(password: Password!): String!
   updateTask(description: NonEmptyString, id: String!, title: NonEmptyString): Task!
-  updateUser(email: EmailAddress, password: Password, username: NonEmptyString): UpdateUserPayload!
+  updateUsername(username: NonEmptyString!): User!
 }
 
 """A string that cannot be passed as an empty value"""
@@ -54,11 +56,6 @@ type Task {
   title: NonEmptyString!
   updatedAt: DateTime!
   user: User!
-}
-
-type UpdateUserPayload {
-  message: String!
-  user: User
 }
 
 type User {
