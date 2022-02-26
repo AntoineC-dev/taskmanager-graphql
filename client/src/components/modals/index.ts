@@ -1,2 +1,2 @@
-export * from "./SendPasswordResetCodeEmailModal";
-export * from "./SendVerificationEmailModal";
+export * from "./ResetCodeEmailModal";
+export * from "./VerificationEmailModal";

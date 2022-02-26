@@ -10,11 +10,11 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useResolverForm, useSendVerificationEmailLazyQuery } from "../../hooks";
+import { useResolverForm, useVerificationEmailLazyQuery } from "../../hooks";
 import { EmailFormInput, emailFormSchema } from "../../validators";
 import { HookFormInput } from "../HookFormInput";
 
-export const SendVerificationEmailModal = () => {
+export const VerificationEmailModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { control, handleSubmit, reset } = useResolverForm<EmailFormInput>({
     schema: emailFormSchema,
@@ -25,9 +25,9 @@ export const SendVerificationEmailModal = () => {
     onClose();
   };
   const toast = useToast();
-  const [sendEmail] = useSendVerificationEmailLazyQuery({
-    onCompleted: ({ sendVerificationEmail }) => {
-      toast({ title: sendVerificationEmail, status: "success", isClosable: true });
+  const [sendEmail] = useVerificationEmailLazyQuery({
+    onCompleted: ({ verificationEmail }) => {
+      toast({ title: verificationEmail, status: "success", isClosable: true });
       onCloseReset();
     },
     onError: (_) => onCloseReset(),

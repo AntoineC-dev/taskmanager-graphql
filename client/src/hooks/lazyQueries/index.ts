@@ -1,2 +1,2 @@
-export * from "./useSendPasswordResetCodeEmailLazyQuery";
-export * from "./useSendVerificationEmailLazyQuery";
+export * from "./useResetCodeEmailLazyQuery";
+export * from "./useVerificationEmailLazyQuery";

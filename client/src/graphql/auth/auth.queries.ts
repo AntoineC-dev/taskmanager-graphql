@@ -11,20 +11,20 @@ export const VERIFY_QUERY = gql`
   }
 `;
 
-// SEND_VERIFICATION_EMAIL_QUERY
-export type SendVericationEmailVariables = { email: string };
-export type SendVericationEmailData = { sendVerificationEmail: string };
-export const SEND_VERIFICATION_EMAIL_QUERY = gql`
+// VERIFICATION_EMAIL_QUERY
+export type VericationEmailVariables = { email: string };
+export type VericationEmailData = { verificationEmail: string };
+export const VERIFICATION_EMAIL_QUERY = gql`
   query ($email: String!) {
-    sendVerificationEmail(email: $email)
+    verificationEmail(email: $email)
   }
 `;
 
-// SEND_PASSWORD_RESET_CODE_EMAIL_QUERY
-export type SendPasswordResetCodeEmailVariables = { email: string };
-export type SendPasswordResetCodeEmailData = { sendPasswordResetCodeEmail: string };
-export const SEND_PASSWORD_RESET_CODE_EMAIL_QUERY = gql`
+// RESET_CODE_EMAIL_QUERY
+export type resetCodeEmailVariables = { email: string };
+export type resetCodeEmailData = { resetCodeEmail: string };
+export const RESET_CODE_EMAIL_QUERY = gql`
   query ($email: String!) {
-    sendPasswordResetCodeEmail(email: $email)
+    resetCodeEmail(email: $email)
   }
 `;
