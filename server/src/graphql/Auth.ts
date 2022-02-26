@@ -20,7 +20,9 @@ export const AuthPayloadModel = objectType({
   definition(t) {
     t.nonNull.string("accessToken");
     t.nonNull.string("refreshToken");
-    t.nonNull.string("message");
+    t.nonNull.field("message", {
+      type: "SuccessMessage",
+    });
   },
 });
 
@@ -28,10 +30,13 @@ export const AuthQuery = extendType({
   type: "Query",
   definition(t) {
     t.nonNull.field("verificationEmail", {
-      type: "String",
+      type: "SuccessMessage",
       args: { email: nonNull(stringArg()) },
       async resolve(_, args, ctx) {
-        const message = "We have sent you a verification email";
+        const message = {
+          title: "Email sent",
+          description: "We have sent you a verification email",
+        };
         const user = await ctx.prisma.user.findUnique({ where: { email: args.email } });
         if (!user) return message;
         checkNotVerified(user);
@@ -40,12 +45,15 @@ export const AuthQuery = extendType({
       },
     });
     t.nonNull.field("resetCodeEmail", {
-      type: "String",
+      type: "SuccessMessage",
       args: {
         email: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
-        const message = "We have sent you a password reset code";
+        const message = {
+          title: "Email sent",
+          description: "We have sent you a password reset code",
+        };
         const user = await ctx.prisma.user.findUnique({ where: { email: args.email } });
         if (!user) return message;
         checkUserVerified(user);
@@ -56,7 +64,7 @@ export const AuthQuery = extendType({
       },
     });
     t.nonNull.field("verify", {
-      type: "String",
+      type: "SuccessMessage",
       args: {
         id: nonNull(stringArg()),
         verificationCode: nonNull(stringArg()),
@@ -64,7 +72,10 @@ export const AuthQuery = extendType({
       async resolve(_, args, ctx) {
         await checkVerificationCode(ctx, args);
         await ctx.prisma.user.update({ where: { id: args.id }, data: { verified: true } });
-        return "You can now login to your account";
+        return {
+          title: "Account verified",
+          description: "You can now login to your account",
+        };
       },
     });
   },
@@ -74,7 +85,7 @@ export const AuthMutation = extendType({
   type: "Mutation",
   definition(t) {
     t.nonNull.field("register", {
-      type: "String",
+      type: "SuccessMessage",
       args: {
         username: nonNull("NonEmptyString"),
         email: nonNull("EmailAddress"),
@@ -82,12 +93,14 @@ export const AuthMutation = extendType({
       },
       async resolve(_, args, ctx) {
         const { email, password, username } = args;
-        const message = "We have sent you a verification email";
         await checkDuplicateEmail(ctx, email);
         const hash = await hashPwd(password);
         const user = await ctx.prisma.user.create({ data: { email, username, password: hash } });
         sendVerificationEmail(user);
-        return message;
+        return {
+          title: "Account created",
+          description: "We have sent you a verification email",
+        };
       },
     });
     t.nonNull.field("login", {
@@ -99,25 +112,34 @@ export const AuthMutation = extendType({
       async resolve(_, args, ctx) {
         checkNotAuthenticated(ctx);
         const user = await checkLoginCredentials(ctx, args);
-        const message = `Hi ${user.username}, how are you today?`;
         checkUserVerified(user);
         const session = await ctx.prisma.session.create({
           data: { userAgent: ctx.userAgent, userId: user.id },
         });
         const { accessToken, refreshToken } = signTokens({ userId: user.id, sessionId: session.id });
-        return { accessToken, refreshToken, message };
+        return {
+          accessToken,
+          refreshToken,
+          message: {
+            title: "Successfully logged in",
+            description: `Hi ${user.username}, how are you today?`,
+          },
+        };
       },
     });
     t.nonNull.field("logout", {
-      type: "String",
+      type: "SuccessMessage",
       async resolve(_, __, ctx) {
         const { sessionId } = checkAuthenticated(ctx);
         await ctx.prisma.session.update({ where: { id: sessionId }, data: { valid: false } });
-        return "We already miss you. See you soon!";
+        return {
+          title: "Successfully logged out",
+          description: "We already miss you. See you soon!",
+        };
       },
     });
     t.nonNull.field("resetPassword", {
-      type: "String",
+      type: "SuccessMessage",
       args: {
         id: nonNull(stringArg()),
         password: nonNull("Password"),
@@ -135,15 +157,21 @@ export const AuthMutation = extendType({
             sessions: { updateMany: { where: { valid: true }, data: { valid: false } } },
           },
         });
-        return "We logged you out from all active sessions";
+        return {
+          title: "Password updated",
+          description: "We logged you out from all active sessions",
+        };
       },
     });
-    t.nonNull.field("logoutEverywhere", {
-      type: "String",
+    t.nonNull.field("logoutAll", {
+      type: "SuccessMessage",
       async resolve(_, __, ctx) {
         const { userId } = checkAuthenticated(ctx);
         await ctx.prisma.session.updateMany({ where: { userId, valid: true }, data: { valid: false } });
-        return "We logged you out from all active sessions";
+        return {
+          title: "Success",
+          description: "We logged you out from all active sessions",
+        };
       },
     });
   },

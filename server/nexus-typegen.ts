@@ -73,7 +73,7 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   AuthPayload: { // root type
     accessToken: string; // String!
-    message: string; // String!
+    message: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     refreshToken: string; // String!
   }
   Mutation: {};
@@ -112,28 +112,28 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     accessToken: string; // String!
-    message: string; // String!
+    message: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     refreshToken: string; // String!
   }
   Mutation: { // field return type
     createTask: NexusGenRootTypes['Task']; // Task!
-    deleteAllTasks: string; // String!
+    deleteAllTasks: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     deleteTask: NexusGenRootTypes['Task']; // Task!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    logout: string; // String!
-    logoutEverywhere: string; // String!
-    register: string; // String!
-    resetPassword: string; // String!
-    updateEmail: string; // String!
-    updatePassword: string; // String!
+    logout: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    logoutAll: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    register: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    resetPassword: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    updateEmail: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    updatePassword: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     updateTask: NexusGenRootTypes['Task']; // Task!
     updateUsername: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
-    resetCodeEmail: string; // String!
-    verificationEmail: string; // String!
-    verify: string; // String!
+    resetCodeEmail: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    verificationEmail: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    verify: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
   }
   SuccessMessage: { // field return type
     description: string; // String!
@@ -161,28 +161,28 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   AuthPayload: { // field return type name
     accessToken: 'String'
-    message: 'String'
+    message: 'SuccessMessage'
     refreshToken: 'String'
   }
   Mutation: { // field return type name
     createTask: 'Task'
-    deleteAllTasks: 'String'
+    deleteAllTasks: 'SuccessMessage'
     deleteTask: 'Task'
     login: 'AuthPayload'
-    logout: 'String'
-    logoutEverywhere: 'String'
-    register: 'String'
-    resetPassword: 'String'
-    updateEmail: 'String'
-    updatePassword: 'String'
+    logout: 'SuccessMessage'
+    logoutAll: 'SuccessMessage'
+    register: 'SuccessMessage'
+    resetPassword: 'SuccessMessage'
+    updateEmail: 'SuccessMessage'
+    updatePassword: 'SuccessMessage'
     updateTask: 'Task'
     updateUsername: 'User'
   }
   Query: { // field return type name
     me: 'User'
-    resetCodeEmail: 'String'
-    verificationEmail: 'String'
-    verify: 'String'
+    resetCodeEmail: 'SuccessMessage'
+    verificationEmail: 'SuccessMessage'
+    verify: 'SuccessMessage'
   }
   SuccessMessage: { // field return type name
     description: 'String'

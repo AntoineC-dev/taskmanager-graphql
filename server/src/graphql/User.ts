@@ -43,7 +43,7 @@ export const UserMutation = extendType({
       },
     });
     t.nonNull.field("updateEmail", {
-      type: "String",
+      type: "SuccessMessage",
       args: { email: nonNull("EmailAddress") },
       async resolve(_, { email }, ctx) {
         const { userId } = checkAuthenticated(ctx);
@@ -58,11 +58,14 @@ export const UserMutation = extendType({
           },
         });
         sendVerificationEmail(updatedUser);
-        return "We have sent you a verification email";
+        return {
+          title: "Email successfully updated",
+          description: "We have sent you a verification email",
+        };
       },
     });
     t.nonNull.field("updatePassword", {
-      type: "String",
+      type: "SuccessMessage",
       args: { password: nonNull("Password") },
       async resolve(_, args, ctx) {
         const { userId } = checkAuthenticated(ctx);
@@ -71,7 +74,10 @@ export const UserMutation = extendType({
           where: { id: userId },
           data: { password, sessions: { updateMany: { where: { valid: true }, data: { valid: false } } } },
         });
-        return "We logged you out from all active sessions";
+        return {
+          title: "Password successfully updated",
+          description: "We logged you out from all active sessions",
+        };
       },
     });
   },

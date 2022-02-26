@@ -73,11 +73,14 @@ export const TaskMutation = extendType({
       },
     });
     t.nonNull.field("deleteAllTasks", {
-      type: "String",
+      type: "SuccessMessage",
       async resolve(_, __, ctx) {
         const { userId } = checkAuthenticated(ctx);
         await ctx.prisma.task.deleteMany({ where: { userId } });
-        return "All tasks deleted";
+        return {
+          title: "Success",
+          description: "We deleted all your tasks",
+        };
       },
     });
   },

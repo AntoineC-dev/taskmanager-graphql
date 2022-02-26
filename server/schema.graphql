@@ -4,7 +4,7 @@
 
 type AuthPayload {
   accessToken: String!
-  message: String!
+  message: SuccessMessage!
   refreshToken: String!
 }
 
@@ -20,15 +20,15 @@ scalar EmailAddress
 
 type Mutation {
   createTask(description: NonEmptyString!, title: NonEmptyString!): Task!
-  deleteAllTasks: String!
+  deleteAllTasks: SuccessMessage!
   deleteTask(id: String!): Task!
   login(email: EmailAddress!, password: String!): AuthPayload!
-  logout: String!
-  logoutEverywhere: String!
-  register(email: EmailAddress!, password: Password!, username: NonEmptyString!): String!
-  resetPassword(id: String!, password: Password!, passwordResetCode: String!): String!
-  updateEmail(email: EmailAddress!): String!
-  updatePassword(password: Password!): String!
+  logout: SuccessMessage!
+  logoutAll: SuccessMessage!
+  register(email: EmailAddress!, password: Password!, username: NonEmptyString!): SuccessMessage!
+  resetPassword(id: String!, password: Password!, passwordResetCode: String!): SuccessMessage!
+  updateEmail(email: EmailAddress!): SuccessMessage!
+  updatePassword(password: Password!): SuccessMessage!
   updateTask(description: NonEmptyString, id: String!, title: NonEmptyString): Task!
   updateUsername(username: NonEmptyString!): User!
 }
@@ -43,9 +43,9 @@ scalar Password
 
 type Query {
   me: User!
-  resetCodeEmail(email: String!): String!
-  verificationEmail(email: String!): String!
-  verify(id: String!, verificationCode: String!): String!
+  resetCodeEmail(email: String!): SuccessMessage!
+  verificationEmail(email: String!): SuccessMessage!
+  verify(id: String!, verificationCode: String!): SuccessMessage!
 }
 
 type SuccessMessage {
