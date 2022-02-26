@@ -4,16 +4,16 @@ import { SettingsIcon } from "@chakra-ui/icons";
 import { RouterMenuItem } from "../..";
 import { useLogoutMutation } from "../../../hooks";
 import { APP_ROUTES } from "../../../navigation";
-import { logout } from "../../../utils";
+import { logout as logoutHandler } from "../../../utils";
 import { MdDashboard } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 
 export const Menu = () => {
   const toast = useToast();
   const [logoutUser, { loading }] = useLogoutMutation({
-    onCompleted: (data) => {
-      logout();
-      toast({ title: data.logout, status: "success", isClosable: true });
+    onCompleted: ({ logout }) => {
+      logoutHandler();
+      toast({ ...logout, status: "success", isClosable: true });
     },
   });
   const onLogout = () => logoutUser();

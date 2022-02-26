@@ -27,7 +27,7 @@ export const ResetCodeEmailModal = () => {
   const toast = useToast();
   const [sendEmail] = useResetCodeEmailLazyQuery({
     onCompleted: ({ resetCodeEmail }) => {
-      toast({ title: resetCodeEmail, status: "success", isClosable: true });
+      toast({ ...resetCodeEmail, status: "success", isClosable: true });
       onCloseReset();
     },
     onError: (_) => onCloseReset(),

@@ -19,12 +19,7 @@ export const RegisterPage = () => {
   const toast = useToast();
   const [registerUser, { loading }] = useRegisterMutation({
     onCompleted: ({ register }) => {
-      toast({
-        title: "Account created",
-        description: register,
-        status: "success",
-        isClosable: true,
-      });
+      toast({ ...register, status: "success", isClosable: true });
       navigate(APP_ROUTES.login);
     },
   });

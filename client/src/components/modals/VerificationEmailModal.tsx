@@ -27,7 +27,7 @@ export const VerificationEmailModal = () => {
   const toast = useToast();
   const [sendEmail] = useVerificationEmailLazyQuery({
     onCompleted: ({ verificationEmail }) => {
-      toast({ title: verificationEmail, status: "success", isClosable: true });
+      toast({ ...verificationEmail, status: "success", isClosable: true });
       onCloseReset();
     },
     onError: (_) => onCloseReset(),

@@ -16,7 +16,7 @@ export const LoginPage = () => {
   const [loginUser, { loading }] = useLoginMutation({
     onCompleted: ({ login: { message, ...tokens } }) => {
       login(tokens);
-      toast({ title: message, status: "success", isClosable: true });
+      toast({ ...message, status: "success", isClosable: true });
     },
   });
   const onSubmit = (formData: LoginFormInput) => {

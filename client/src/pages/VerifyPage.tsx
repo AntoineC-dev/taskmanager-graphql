@@ -11,12 +11,7 @@ export const VerifyPage = () => {
     { id: id!, verificationCode: verificationCode! },
     {
       onCompleted: ({ verify }) => {
-        toast({
-          title: "Account verified",
-          description: verify,
-          status: "success",
-          isClosable: true,
-        });
+        toast({ ...verify, status: "success", isClosable: true });
         navigate(APP_ROUTES.login);
       },
       onError: (_) => navigate(APP_ROUTES.login),

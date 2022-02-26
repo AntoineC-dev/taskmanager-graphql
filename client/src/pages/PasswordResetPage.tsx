@@ -15,7 +15,7 @@ export const PasswordResetPage = () => {
   });
   const [handleResetPassword, { loading }] = useResetPasswordMutation({
     onCompleted: ({ resetPassword }) => {
-      toast({ title: resetPassword, status: "success", isClosable: true });
+      toast({ ...resetPassword, status: "success", isClosable: true });
       navigate(APP_ROUTES.login);
     },
   });
