@@ -41,8 +41,8 @@ scalar Password
 
 type Query {
   me: User!
-  sendPasswordResetCodeEmail(email: String!): String!
-  sendVerificationEmail(email: String!): String!
+  resetCodeEmail(email: String!): String!
+  verificationEmail(email: String!): String!
   verify(id: String!, verificationCode: String!): String!
 }
 

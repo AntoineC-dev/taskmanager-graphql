@@ -129,8 +129,8 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
-    sendPasswordResetCodeEmail: string; // String!
-    sendVerificationEmail: string; // String!
+    resetCodeEmail: string; // String!
+    verificationEmail: string; // String!
     verify: string; // String!
   }
   Task: { // field return type
@@ -176,8 +176,8 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     me: 'User'
-    sendPasswordResetCodeEmail: 'String'
-    sendVerificationEmail: 'String'
+    resetCodeEmail: 'String'
+    verificationEmail: 'String'
     verify: 'String'
   }
   Task: { // field return type name
@@ -238,10 +238,10 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    sendPasswordResetCodeEmail: { // args
+    resetCodeEmail: { // args
       email: string; // String!
     }
-    sendVerificationEmail: { // args
+    verificationEmail: { // args
       email: string; // String!
     }
     verify: { // args

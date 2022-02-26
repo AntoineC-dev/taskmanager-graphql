@@ -27,7 +27,7 @@ export const AuthPayloadModel = objectType({
 export const AuthQuery = extendType({
   type: "Query",
   definition(t) {
-    t.nonNull.field("sendVerificationEmail", {
+    t.nonNull.field("verificationEmail", {
       type: "String",
       args: {
         email: nonNull(stringArg()),
@@ -41,7 +41,7 @@ export const AuthQuery = extendType({
         return message;
       },
     });
-    t.nonNull.field("sendPasswordResetCodeEmail", {
+    t.nonNull.field("resetCodeEmail", {
       type: "String",
       args: {
         email: nonNull(stringArg()),
