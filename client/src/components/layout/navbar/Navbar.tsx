@@ -1,34 +1,22 @@
-import { Button, ButtonGroup, HStack, Spacer, StackProps, useToast } from "@chakra-ui/react";
+import { ButtonGroup, HStack, Spacer, StackProps } from "@chakra-ui/react";
 import { APP_ROUTES } from "../../../navigation";
 import { FaHome } from "react-icons/fa";
-import { useIsAuthenticated, useLogoutMutation } from "../../../hooks";
-import { logout } from "../../../utils";
+import { useIsAuthenticated } from "../../../hooks";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { RouterButton } from "../../router";
+import { Menu } from "./Menu";
 
 export const Navbar = (props: StackProps) => {
   const isAuthenticated = useIsAuthenticated();
-  const toast = useToast();
-  const [logoutUser, { loading }] = useLogoutMutation({
-    onCompleted: (data) => {
-      logout();
-      toast({ title: data.logout, status: "success", isClosable: true });
-    },
-  });
   return (
     <HStack {...props}>
       <ButtonGroup variant="ghost" flexGrow={1}>
         <RouterButton to={APP_ROUTES.home} leftIcon={<FaHome />}>
-          Home
+          TaskManager
         </RouterButton>
         <Spacer />
         {isAuthenticated ? (
-          <>
-            <RouterButton to={APP_ROUTES.dashboard}>Dashboard</RouterButton>
-            <Button onClick={() => logoutUser()} isDisabled={loading}>
-              Logout
-            </Button>
-          </>
+          <Menu />
         ) : (
           <>
             <RouterButton to={APP_ROUTES.register}>Register</RouterButton>
