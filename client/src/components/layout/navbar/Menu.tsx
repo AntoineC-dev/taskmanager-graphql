@@ -1,9 +1,12 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { IconButton, Menu as ChakraMenu, MenuButton, MenuItem, MenuList, useToast } from "@chakra-ui/react";
+import { SettingsIcon } from "@chakra-ui/icons";
 import { RouterMenuItem } from "../..";
 import { useLogoutMutation } from "../../../hooks";
 import { APP_ROUTES } from "../../../navigation";
 import { logout } from "../../../utils";
+import { MdDashboard } from "react-icons/md";
+import { FiLogOut } from "react-icons/fi";
 
 export const Menu = () => {
   const toast = useToast();
@@ -26,9 +29,11 @@ export const Menu = () => {
         icon={<HamburgerIcon />}
       />
       <MenuList>
-        <RouterMenuItem to={APP_ROUTES.dashboard}>Dashboard</RouterMenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem onClick={onLogout} isDisabled={loading}>
+        <RouterMenuItem to={APP_ROUTES.dashboard} icon={<MdDashboard />}>
+          Dashboard
+        </RouterMenuItem>
+        <MenuItem icon={<SettingsIcon />}>Profile</MenuItem>
+        <MenuItem onClick={onLogout} icon={<FiLogOut />} isDisabled={loading}>
           Logout
         </MenuItem>
       </MenuList>
