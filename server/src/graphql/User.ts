@@ -52,6 +52,7 @@ export const UserMutation = extendType({
           where: { id: userId },
           data: {
             email,
+            verified: false,
             verificationCode,
             sessions: { updateMany: { where: { valid: true }, data: { valid: false } } },
           },
