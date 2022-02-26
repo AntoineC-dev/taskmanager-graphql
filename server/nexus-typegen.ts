@@ -78,6 +78,10 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  SuccessMessage: { // root type
+    description: string; // String!
+    title: string; // String!
+  }
   Task: { // root type
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -131,6 +135,10 @@ export interface NexusGenFieldTypes {
     verificationEmail: string; // String!
     verify: string; // String!
   }
+  SuccessMessage: { // field return type
+    description: string; // String!
+    title: string; // String!
+  }
   Task: { // field return type
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -175,6 +183,10 @@ export interface NexusGenFieldTypeNames {
     resetCodeEmail: 'String'
     verificationEmail: 'String'
     verify: 'String'
+  }
+  SuccessMessage: { // field return type name
+    description: 'String'
+    title: 'String'
   }
   Task: { // field return type name
     completed: 'Boolean'

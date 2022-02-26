@@ -1,5 +1,6 @@
 // Models
 export * from "./Auth";
+export * from "./SuccessMessage";
 export * from "./Task";
 export * from "./User";
 // Scalars
