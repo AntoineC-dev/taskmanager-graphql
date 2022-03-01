@@ -44,6 +44,14 @@ export async function checkPasswordResetCode(
   if (!user || !user.verified || user.passwordResetCode !== passwordResetCode) {
     throw new UserInputError("We could not reset your password");
   }
+  return user;
+}
+
+export async function checkPasswordDifferent({ user, password }: { user: User; password: string }) {
+  const isValid = await comparePwd(user.password, password);
+  if (isValid) {
+    throw new UserInputError("Should be different from your current password");
+  }
 }
 
 export function checkUserVerified(user: User) {

@@ -5,6 +5,7 @@ import {
   checkLoginCredentials,
   checkNotAuthenticated,
   checkNotVerified,
+  checkPasswordDifferent,
   checkPasswordResetCode,
   checkUserVerified,
   checkVerificationCode,
@@ -147,7 +148,8 @@ export const AuthMutation = extendType({
       },
       async resolve(_, args, ctx) {
         const { id, password, passwordResetCode } = args;
-        await checkPasswordResetCode(ctx, { id, passwordResetCode });
+        const user = await checkPasswordResetCode(ctx, { id, passwordResetCode });
+        await checkPasswordDifferent({ user, password });
         const hash = await hashPwd(password);
         await ctx.prisma.user.update({
           where: { id },
