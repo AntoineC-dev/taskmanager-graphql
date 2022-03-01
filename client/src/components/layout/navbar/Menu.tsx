@@ -32,7 +32,9 @@ export const Menu = () => {
         <RouterMenuItem to={APP_ROUTES.dashboard} icon={<MdDashboard />}>
           Dashboard
         </RouterMenuItem>
-        <MenuItem icon={<SettingsIcon />}>Profile</MenuItem>
+        <RouterMenuItem to={APP_ROUTES.profile} icon={<SettingsIcon />}>
+          Profile
+        </RouterMenuItem>
         <MenuItem onClick={onLogout} icon={<FiLogOut />} isDisabled={loading}>
           Logout
         </MenuItem>
