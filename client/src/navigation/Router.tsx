@@ -5,6 +5,7 @@ import {
   LoginPage,
   NotFoundPage,
   PasswordResetPage,
+  ProfilePage,
   RegisterPage,
   VerifyPage,
 } from "../pages";
@@ -22,6 +23,7 @@ export const Router = () => {
           <Route path={APP_ROUTES.login} element={<PublicRoute Element={LoginPage} />} />
           {/** Protected routes */}
           <Route path={APP_ROUTES.dashboard} element={<ProtectedRoute Element={DashboardPage} />} />
+          <Route path={APP_ROUTES.profile} element={<ProtectedRoute Element={ProfilePage} />} />
         </Route>
         <Route path={APP_ROUTES.verify} element={<VerifyPage />} />
         <Route path={APP_ROUTES.passwordReset} element={<PasswordResetPage />} />

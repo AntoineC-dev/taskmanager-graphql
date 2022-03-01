@@ -5,6 +5,7 @@ export const APP_ROUTES = {
   verify: "/verify/:id/:verificationCode",
   passwordReset: "/password-reset/:id/:passwordResetCode",
   dashboard: "/dashboard",
+  profile: "/profile",
 };
 
 export const GITHUB_LINK = "https://github.com/AntoineC-dev/taskmanager-graphql";
