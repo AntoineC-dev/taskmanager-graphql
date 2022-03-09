@@ -8,7 +8,7 @@ export const HomePage = () => {
     <Center h="100%">
       <VStack spacing={8}>
         <RotatingLogo h="40vmin" pointerEvents="none" />
-        <Text fontSize="xl">
+        <Text fontSize="3xl">
           Welcome on my <Code fontSize="inherit">Graphql / React</Code> task manager.
         </Text>
         <Text fontSize="lg">
@@ -18,7 +18,7 @@ export const HomePage = () => {
             <ExternalLinkIcon mx="4px" />
           </Link>
         </Text>
-        <RouterButton to={APP_ROUTES.register} textTransform="uppercase" rightIcon={<ChevronRightIcon />}>
+        <RouterButton id="cta" to={APP_ROUTES.register} textTransform="uppercase" rightIcon={<ChevronRightIcon />}>
           Start the Process
         </RouterButton>
       </VStack>
