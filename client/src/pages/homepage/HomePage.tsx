@@ -1,7 +1,7 @@
 import { Center, Code, Link, Text, VStack } from "@chakra-ui/react";
 import { ChevronRightIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { RotatingLogo, RouterButton } from "../components";
-import { APP_ROUTES, GITHUB_LINK } from "../navigation";
+import { RotatingLogo, RouterButton } from "../../components";
+import { APP_ROUTES, GITHUB_LINK } from "../../navigation";
 
 export const HomePage = () => {
   return (
