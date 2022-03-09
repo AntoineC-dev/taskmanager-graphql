@@ -1,7 +1,7 @@
 import { Center, Code, Link, Text, VStack } from "@chakra-ui/react";
 import { ChevronRightIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { RotatingLogo, RouterButton } from "../../components";
-import { APP_ROUTES, GITHUB_LINK } from "../../navigation";
+import { RotatingLogo, RouterButton } from "../components";
+import { APP_ROUTES, GITHUB_LINK } from "../navigation";
 
 export const HomePage = () => {
   return (
@@ -18,7 +18,7 @@ export const HomePage = () => {
             <ExternalLinkIcon mx="4px" />
           </Link>
         </Text>
-        <RouterButton id="cta" to={APP_ROUTES.register} textTransform="uppercase" rightIcon={<ChevronRightIcon />}>
+        <RouterButton to={APP_ROUTES.register} textTransform="uppercase" rightIcon={<ChevronRightIcon />}>
           Start the Process
         </RouterButton>
       </VStack>
