@@ -1,4 +1,16 @@
-import { Center, Code, Grid, GridItem, Heading, HStack, Text } from "@chakra-ui/react";
+import { MinusIcon } from "@chakra-ui/icons";
+import {
+  Center,
+  Code,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+  IconButton,
+  StackDivider,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Task } from "../../models";
 
 interface DashboardProps {
@@ -23,12 +35,22 @@ export const Dashboard = ({ tasks, username }: DashboardProps) => {
             <Heading>No task created yet...</Heading>
           </Center>
         ) : (
-          <>
-            <Heading>All tasks</Heading>
-            {tasks.map((task) => (
-              <Text>{task.title}</Text>
-            ))}
-          </>
+          <Center h="100%">
+            <VStack divider={<StackDivider />}>
+              {tasks.map((task) => (
+                <HStack divider={<StackDivider />}>
+                  <Text>{`${task.title} - ${task.description}`}</Text>
+                  <IconButton
+                    aria-label={`delete ${task.title}`}
+                    icon={<MinusIcon />}
+                    size="xs"
+                    variant="ghost"
+                    color="current"
+                  />
+                </HStack>
+              ))}
+            </VStack>
+          </Center>
         )}
       </GridItem>
     </Grid>
