@@ -21,7 +21,7 @@ scalar EmailAddress
 type Mutation {
   createTask(description: NonEmptyString!, title: NonEmptyString!): SuccessMessage!
   deleteAllTasks: SuccessMessage!
-  deleteTask(id: String!): Task!
+  deleteTask(id: String!): SuccessMessage!
   login(email: EmailAddress!, password: String!): AuthPayload!
   logout: SuccessMessage!
   logoutAll: SuccessMessage!
