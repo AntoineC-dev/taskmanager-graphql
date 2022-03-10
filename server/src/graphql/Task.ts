@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import { extendType, nonNull, objectType, stringArg } from "nexus";
-import { checkAuthenticated } from "../utils";
+import { checkAuthenticated, truncateString } from "../utils";
 
 export const TaskModel = objectType({
   name: "Task",
@@ -25,19 +25,23 @@ export const TaskMutation = extendType({
   type: "Mutation",
   definition(t) {
     t.nonNull.field("createTask", {
-      type: "Task",
+      type: "SuccessMessage",
       args: {
         title: nonNull("NonEmptyString"),
         description: nonNull("NonEmptyString"),
       },
-      resolve(_, args, ctx) {
+      async resolve(_, args, ctx) {
         const { userId } = checkAuthenticated(ctx);
-        return ctx.prisma.task.create({
+        const task = await ctx.prisma.task.create({
           data: {
             ...args,
             userId,
           },
         });
+        return {
+          title: "New task created",
+          description: `${truncateString(task.title, 15)} was added to your list`,
+        };
       },
     });
     t.nonNull.field("updateTask", {

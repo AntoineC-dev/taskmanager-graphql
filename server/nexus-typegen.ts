@@ -116,7 +116,7 @@ export interface NexusGenFieldTypes {
     refreshToken: string; // String!
   }
   Mutation: { // field return type
-    createTask: NexusGenRootTypes['Task']; // Task!
+    createTask: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     deleteAllTasks: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     deleteTask: NexusGenRootTypes['Task']; // Task!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
@@ -165,7 +165,7 @@ export interface NexusGenFieldTypeNames {
     refreshToken: 'String'
   }
   Mutation: { // field return type name
-    createTask: 'Task'
+    createTask: 'SuccessMessage'
     deleteAllTasks: 'SuccessMessage'
     deleteTask: 'Task'
     login: 'AuthPayload'

@@ -19,7 +19,7 @@ A field whose value matches /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)
 scalar EmailAddress
 
 type Mutation {
-  createTask(description: NonEmptyString!, title: NonEmptyString!): Task!
+  createTask(description: NonEmptyString!, title: NonEmptyString!): SuccessMessage!
   deleteAllTasks: SuccessMessage!
   deleteTask(id: String!): Task!
   login(email: EmailAddress!, password: String!): AuthPayload!
