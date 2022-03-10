@@ -11,3 +11,15 @@ export const CREATE_TASK_MUTATION = gql`
     }
   }
 `;
+
+// DELETE_TASK_MUTATION
+export type DeleteTaskData = { deleteTask: SuccessMessage };
+export type DeleteTaskVariables = { id: string };
+export const DELETE_TASK_MUTATION = gql`
+  mutation ($id: String!) {
+    deleteTask(id: $id) {
+      title
+      description
+    }
+  }
+`;
