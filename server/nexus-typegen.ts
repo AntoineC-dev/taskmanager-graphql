@@ -85,7 +85,6 @@ export interface NexusGenObjects {
   Task: { // root type
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    description: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     id: string; // String!
     title: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -127,7 +126,7 @@ export interface NexusGenFieldTypes {
     toggleTask: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     updateEmail: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     updatePassword: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
-    updateTask: NexusGenRootTypes['Task']; // Task!
+    updateTask: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     updateUsername: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
@@ -143,7 +142,6 @@ export interface NexusGenFieldTypes {
   Task: { // field return type
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    description: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     id: string; // String!
     title: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -177,7 +175,7 @@ export interface NexusGenFieldTypeNames {
     toggleTask: 'SuccessMessage'
     updateEmail: 'SuccessMessage'
     updatePassword: 'SuccessMessage'
-    updateTask: 'Task'
+    updateTask: 'SuccessMessage'
     updateUsername: 'User'
   }
   Query: { // field return type name
@@ -193,7 +191,6 @@ export interface NexusGenFieldTypeNames {
   Task: { // field return type name
     completed: 'Boolean'
     createdAt: 'DateTime'
-    description: 'NonEmptyString'
     id: 'String'
     title: 'NonEmptyString'
     updatedAt: 'DateTime'
@@ -212,7 +209,6 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     createTask: { // args
-      description: NexusGenScalars['NonEmptyString']; // NonEmptyString!
       title: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     }
     deleteTask: { // args
@@ -242,9 +238,8 @@ export interface NexusGenArgTypes {
       password: NexusGenScalars['Password']; // Password!
     }
     updateTask: { // args
-      description?: NexusGenScalars['NonEmptyString'] | null; // NonEmptyString
       id: string; // String!
-      title?: NexusGenScalars['NonEmptyString'] | null; // NonEmptyString
+      title: NexusGenScalars['NonEmptyString']; // NonEmptyString!
     }
     updateUsername: { // args
       username: NexusGenScalars['NonEmptyString']; // NonEmptyString!

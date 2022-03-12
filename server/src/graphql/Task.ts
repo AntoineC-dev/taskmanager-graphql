@@ -9,7 +9,6 @@ export const TaskModel = objectType({
     t.nonNull.dateTime("createdAt");
     t.nonNull.dateTime("updatedAt");
     t.nonNull.nonEmptyString("title");
-    t.nonNull.nonEmptyString("description");
     t.nonNull.boolean("completed");
     t.nonNull.field("user", {
       type: "User",
@@ -26,18 +25,10 @@ export const TaskMutation = extendType({
   definition(t) {
     t.nonNull.field("createTask", {
       type: "SuccessMessage",
-      args: {
-        title: nonNull("NonEmptyString"),
-        description: nonNull("NonEmptyString"),
-      },
-      async resolve(_, args, ctx) {
+      args: { title: nonNull("NonEmptyString") },
+      async resolve(_, { title }, ctx) {
         const { userId } = checkAuthenticated(ctx);
-        const task = await ctx.prisma.task.create({
-          data: {
-            ...args,
-            userId,
-          },
-        });
+        const task = await ctx.prisma.task.create({ data: { title, userId } });
         return {
           title: "New task created",
           description: `${truncateString(task.title, 15)} was added to your list`,
@@ -45,25 +36,19 @@ export const TaskMutation = extendType({
       },
     });
     t.nonNull.field("updateTask", {
-      type: "Task",
+      type: "SuccessMessage",
       args: {
         id: nonNull(stringArg()),
-        title: "NonEmptyString",
-        description: "NonEmptyString",
+        title: nonNull("NonEmptyString"),
       },
       async resolve(_, args, ctx) {
         checkAuthenticated(ctx);
-        const { id, description, title } = args;
-        const task = await ctx.prisma.task.findUnique({ where: { id }, rejectOnNotFound: true });
-        const updatedTitle = title && title !== task.title;
-        const updatedDesc = description && description !== task.description;
-        return ctx.prisma.task.update({
-          where: { id },
-          data: {
-            title: updatedTitle ? title : undefined,
-            description: updatedDesc ? description : undefined,
-          },
-        });
+        const { id, title } = args;
+        const task = await ctx.prisma.task.update({ where: { id }, data: { title } });
+        return {
+          title: "Task updated",
+          description: `${truncateString(task.title, 15)} was successfully updated`,
+        };
       },
     });
     t.nonNull.field("toggleTask", {
