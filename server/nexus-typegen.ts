@@ -124,6 +124,7 @@ export interface NexusGenFieldTypes {
     logoutAll: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     register: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     resetPassword: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    toggleTask: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     updateEmail: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     updatePassword: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     updateTask: NexusGenRootTypes['Task']; // Task!
@@ -173,6 +174,7 @@ export interface NexusGenFieldTypeNames {
     logoutAll: 'SuccessMessage'
     register: 'SuccessMessage'
     resetPassword: 'SuccessMessage'
+    toggleTask: 'SuccessMessage'
     updateEmail: 'SuccessMessage'
     updatePassword: 'SuccessMessage'
     updateTask: 'Task'
@@ -229,6 +231,9 @@ export interface NexusGenArgTypes {
       id: string; // String!
       password: NexusGenScalars['Password']; // Password!
       passwordResetCode: string; // String!
+    }
+    toggleTask: { // args
+      id: string; // String!
     }
     updateEmail: { // args
       email: NexusGenScalars['EmailAddress']; // EmailAddress!

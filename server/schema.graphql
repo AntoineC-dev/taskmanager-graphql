@@ -27,6 +27,7 @@ type Mutation {
   logoutAll: SuccessMessage!
   register(email: EmailAddress!, password: Password!, username: NonEmptyString!): SuccessMessage!
   resetPassword(id: String!, password: Password!, passwordResetCode: String!): SuccessMessage!
+  toggleTask(id: String!): SuccessMessage!
   updateEmail(email: EmailAddress!): SuccessMessage!
   updatePassword(password: Password!): SuccessMessage!
   updateTask(description: NonEmptyString, id: String!, title: NonEmptyString): Task!

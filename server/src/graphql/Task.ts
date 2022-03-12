@@ -66,6 +66,20 @@ export const TaskMutation = extendType({
         });
       },
     });
+    t.nonNull.field("toggleTask", {
+      type: "SuccessMessage",
+      args: { id: nonNull(stringArg()) },
+      async resolve(_, { id }, ctx) {
+        const task = await ctx.prisma.task.findUnique({ where: { id }, rejectOnNotFound: true });
+        await ctx.prisma.task.update({ where: { id }, data: { completed: !task.completed } });
+        return {
+          title: "Task updated",
+          description: `${truncateString(task.title, 15)} has been marked ${
+            task.completed ? "uncompleted" : "completed"
+          }`,
+        };
+      },
+    });
     t.nonNull.field("deleteTask", {
       type: "SuccessMessage",
       args: {
