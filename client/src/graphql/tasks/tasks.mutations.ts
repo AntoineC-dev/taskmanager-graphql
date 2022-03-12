@@ -12,6 +12,18 @@ export const CREATE_TASK_MUTATION = gql`
   }
 `;
 
+// TOGGLE_TASK_MUTATION
+export type ToggleTaskData = { toggleTask: SuccessMessage };
+export type ToggleTaskVariables = { id: string };
+export const TOGGLE_TASK_MUTATION = gql`
+  mutation ($id: String!) {
+    toggleTask(id: $id) {
+      title
+      description
+    }
+  }
+`;
+
 // DELETE_TASK_MUTATION
 export type DeleteTaskData = { deleteTask: SuccessMessage };
 export type DeleteTaskVariables = { id: string };
