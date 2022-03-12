@@ -12,7 +12,6 @@ export const ME_QUERY = gql`
       tasks {
         id
         title
-        description
         completed
       }
     }

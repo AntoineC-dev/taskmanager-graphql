@@ -11,7 +11,6 @@ import {
   ModalOverlay,
   useDisclosure,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { ME_QUERY } from "../../graphql";
 import { useCreateTaskMutation, useResolverForm } from "../../hooks";
@@ -22,7 +21,7 @@ export const CreateTaskModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { control, handleSubmit, reset } = useResolverForm<CreateTaskInput>({
     schema: createTaskSchema,
-    defaultValues: { title: "", description: "" },
+    defaultValues: { title: "" },
   });
   const onCloseReset = () => {
     reset();
@@ -58,9 +57,8 @@ export const CreateTaskModal = () => {
         <ModalContent as="form" onSubmit={handleSubmit(onSubmit)}>
           <ModalHeader>Create new task</ModalHeader>
           <ModalCloseButton />
-          <ModalBody as={VStack}>
+          <ModalBody>
             <HookFormInput control={control} name="title" />
-            <HookFormInput control={control} name="description" />
           </ModalBody>
           <ModalFooter>
             <Button type="submit">Create task</Button>

@@ -1,20 +1,6 @@
-import { MinusIcon } from "@chakra-ui/icons";
-import {
-  Center,
-  Code,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  IconButton,
-  StackDivider,
-  Text,
-  useToast,
-  VStack,
-} from "@chakra-ui/react";
-import { ME_QUERY } from "../../graphql";
-import { useDeleteTaskMutation } from "../../hooks";
+import { Center, Code, Grid, GridItem, Heading, HStack, StackDivider, Text, VStack } from "@chakra-ui/react";
 import { Task } from "../../models";
+import { TaskItem } from "./TaskItem";
 
 interface DashboardProps {
   username: string;
@@ -22,13 +8,6 @@ interface DashboardProps {
 }
 
 export const Dashboard = ({ tasks, username }: DashboardProps) => {
-  const toast = useToast();
-  const [delTask] = useDeleteTaskMutation({
-    onCompleted: ({ deleteTask }) => {
-      toast({ ...deleteTask, status: "success", isClosable: true });
-    },
-    refetchQueries: [ME_QUERY],
-  });
   return (
     <Grid h="100%" templateRows="auto 1fr" gap={4}>
       <GridItem rowSpan={1} as={HStack} justifyContent="space-between">
@@ -46,19 +25,9 @@ export const Dashboard = ({ tasks, username }: DashboardProps) => {
           </Center>
         ) : (
           <Center h="100%">
-            <VStack divider={<StackDivider />}>
+            <VStack divider={<StackDivider />} w="100%" maxW="container.md">
               {tasks.map((task) => (
-                <HStack key={task.id} divider={<StackDivider />}>
-                  <Text>{`${task.title} - ${task.description}`}</Text>
-                  <IconButton
-                    aria-label={`delete ${task.title}`}
-                    onClick={() => delTask({ variables: { id: task.id } })}
-                    icon={<MinusIcon />}
-                    size="sm"
-                    variant="ghost"
-                    color="current"
-                  />
-                </HStack>
+                <TaskItem key={task.id} task={task} w="100%" />
               ))}
             </VStack>
           </Center>
