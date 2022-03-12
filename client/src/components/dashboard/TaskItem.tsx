@@ -5,13 +5,13 @@ import {
   EditablePreview,
   HStack,
   IconButton,
-  Spacer,
+  StackDivider,
   StackProps,
   Switch,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { ME_QUERY } from "../../graphql";
-import { useDeleteTaskMutation } from "../../hooks";
-import { useToggleTaskMutation } from "../../hooks/mutations/useToggleTaskMutation";
+import { useDeleteTaskMutation, useToggleTaskMutation, useUpdateTaskMutation } from "../../hooks";
 import { Task } from "../../models";
 
 interface TaskItemProps extends Omit<StackProps, "divider"> {
@@ -19,21 +19,35 @@ interface TaskItemProps extends Omit<StackProps, "divider"> {
 }
 
 export const TaskItem = ({ task, ...props }: TaskItemProps) => {
+  const [title, setTitle] = useState(task.title);
   const [deleteTask] = useDeleteTaskMutation({ variables: { id: task.id }, refetchQueries: [ME_QUERY] });
   const [toggleTask] = useToggleTaskMutation({ variables: { id: task.id }, refetchQueries: [ME_QUERY] });
+  const [updateTask] = useUpdateTaskMutation({ refetchQueries: [ME_QUERY] });
+  const onSubmit = (next: string) => {
+    const trimmed = next.trim();
+    if (trimmed.length === 0 || trimmed === task.title) {
+      setTitle(task.title);
+      return;
+    }
+    updateTask({ variables: { id: task.id, title: trimmed } });
+  };
   return (
-    <HStack spacing={4} {...props}>
+    <HStack divider={<StackDivider />} {...props}>
       <Switch isChecked={task.completed} onChange={() => toggleTask()} />
-      <Editable defaultValue={task.title}>
+      <Editable
+        flex={1}
+        fontSize="lg"
+        defaultValue={task.title}
+        value={title}
+        onChange={(next) => setTitle(next)}
+        onSubmit={onSubmit}>
         <EditablePreview />
         <EditableInput />
       </Editable>
-      <Spacer />
       <IconButton
         aria-label={`delete ${task.title}`}
         onClick={() => deleteTask()}
         icon={<DeleteIcon />}
-        size="sm"
         variant="ghost"
         color="current"
       />
