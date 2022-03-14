@@ -24,45 +24,31 @@ export const TaskMutation = extendType({
   type: "Mutation",
   definition(t) {
     t.nonNull.field("createTask", {
-      type: "SuccessMessage",
+      type: "Task",
       args: { title: nonNull("NonEmptyString") },
-      async resolve(_, { title }, ctx) {
+      resolve(_, { title }, ctx) {
         const { userId } = checkAuthenticated(ctx);
-        const task = await ctx.prisma.task.create({ data: { title, userId } });
-        return {
-          title: "New task created",
-          description: `${truncateString(task.title, 15)} was added to your list`,
-        };
+        return ctx.prisma.task.create({ data: { title, userId } });
       },
     });
     t.nonNull.field("updateTask", {
-      type: "SuccessMessage",
+      type: "Task",
       args: {
         id: nonNull(stringArg()),
         title: nonNull("NonEmptyString"),
       },
-      async resolve(_, args, ctx) {
+      resolve(_, args, ctx) {
         checkAuthenticated(ctx);
         const { id, title } = args;
-        const task = await ctx.prisma.task.update({ where: { id }, data: { title } });
-        return {
-          title: "Task updated",
-          description: `${truncateString(task.title, 15)} was successfully updated`,
-        };
+        return ctx.prisma.task.update({ where: { id }, data: { title } });
       },
     });
     t.nonNull.field("toggleTask", {
-      type: "SuccessMessage",
+      type: "Task",
       args: { id: nonNull(stringArg()) },
       async resolve(_, { id }, ctx) {
         const task = await ctx.prisma.task.findUnique({ where: { id }, rejectOnNotFound: true });
-        await ctx.prisma.task.update({ where: { id }, data: { completed: !task.completed } });
-        return {
-          title: "Task updated",
-          description: `${truncateString(task.title, 15)} has been marked ${
-            task.completed ? "uncompleted" : "completed"
-          }`,
-        };
+        return ctx.prisma.task.update({ where: { id }, data: { completed: !task.completed } });
       },
     });
     t.nonNull.field("deleteTask", {
