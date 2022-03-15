@@ -10,7 +10,6 @@ import {
   Switch,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { ME_QUERY } from "../../graphql";
 import { useDeleteTaskMutation, useToggleTaskMutation, useUpdateTaskMutation } from "../../hooks";
 import { Task } from "../../models";
 
@@ -20,9 +19,9 @@ interface TaskItemProps extends Omit<StackProps, "divider"> {
 
 export const TaskItem = ({ task, ...props }: TaskItemProps) => {
   const [title, setTitle] = useState(task.title);
-  const [deleteTask] = useDeleteTaskMutation({ variables: { id: task.id }, refetchQueries: [ME_QUERY] });
-  const [toggleTask] = useToggleTaskMutation({ variables: { id: task.id }, refetchQueries: [ME_QUERY] });
-  const [updateTask] = useUpdateTaskMutation({ refetchQueries: [ME_QUERY] });
+  const [deleteTask] = useDeleteTaskMutation({ variables: { id: task.id } });
+  const [toggleTask] = useToggleTaskMutation({ variables: { id: task.id } });
+  const [updateTask] = useUpdateTaskMutation();
   const onSubmit = (next: string) => {
     const trimmed = next.trim();
     if (trimmed.length === 0 || trimmed === task.title) {
