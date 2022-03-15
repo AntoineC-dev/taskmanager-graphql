@@ -65,17 +65,11 @@ export const TaskMutation = extendType({
       },
     });
     t.nonNull.field("deleteTask", {
-      type: "SuccessMessage",
-      args: {
-        id: nonNull(stringArg()),
-      },
-      async resolve(_, args, ctx) {
+      type: "Task",
+      args: { id: nonNull(stringArg()) },
+      resolve(_, args, ctx) {
         checkAuthenticated(ctx);
-        const task = await ctx.prisma.task.delete({ where: { id: args.id } });
-        return {
-          title: "Task deleted",
-          description: `${truncateString(task.title, 15)} was removed from your list`,
-        };
+        return ctx.prisma.task.delete({ where: { id: args.id } });
       },
     });
     t.nonNull.field("deleteAllTasks", {
