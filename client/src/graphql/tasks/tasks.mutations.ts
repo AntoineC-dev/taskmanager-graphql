@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
-import { SuccessMessage } from "../../models";
+import { CORE_TASK_FIELDS, SuccessMessage, Task } from "../../models";
 
 // CREATE_TASK_MUTATION
-export type CreateTaskData = { createTask: SuccessMessage };
+export type CreateTaskData = { createTask: Task };
 export const CREATE_TASK_MUTATION = gql`
+  ${CORE_TASK_FIELDS}
   mutation ($title: NonEmptyString!) {
     createTask(title: $title) {
-      title
-      description
+      ...CoreTaskFields
     }
   }
 `;
