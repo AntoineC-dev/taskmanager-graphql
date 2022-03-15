@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { booleanArg, extendType, nonNull, objectType, stringArg } from "nexus";
 import { checkAuthenticated, truncateString } from "../utils";
 
 export const TaskModel = objectType({
@@ -25,9 +25,19 @@ export const TaskQuery = extendType({
   definition(t) {
     t.nonNull.list.nonNull.field("tasks", {
       type: "Task",
-      resolve(_, __, ctx) {
+      args: {
+        filter: stringArg(),
+        completed: booleanArg(),
+      },
+      resolve(_, { completed, filter }, ctx) {
         const { userId } = checkAuthenticated(ctx);
-        return ctx.prisma.task.findMany({ where: { userId } });
+        return ctx.prisma.task.findMany({
+          where: {
+            userId,
+            completed: completed as boolean | undefined,
+            title: { contains: filter as string | undefined },
+          },
+        });
       },
     });
   },

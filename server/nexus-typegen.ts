@@ -251,6 +251,10 @@ export interface NexusGenArgTypes {
     resetCodeEmail: { // args
       email: string; // String!
     }
+    tasks: { // args
+      completed?: boolean | null; // Boolean
+      filter?: string | null; // String
+    }
     verificationEmail: { // args
       email: string; // String!
     }
