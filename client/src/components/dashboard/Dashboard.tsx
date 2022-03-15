@@ -1,13 +1,21 @@
-import { Center, Code, Grid, GridItem, Heading, HStack, StackDivider, Text, VStack } from "@chakra-ui/react";
-import { Task } from "../../models";
+import { Center, Code, Grid, GridItem, Heading, HStack, Spinner, StackDivider, Text, VStack } from "@chakra-ui/react";
+import { useMemo } from "react";
+import { useTasksQuery } from "../../hooks";
 import { TaskItem } from "./TaskItem";
 
 interface DashboardProps {
   username: string;
-  tasks: Task[];
 }
 
-export const Dashboard = ({ tasks, username }: DashboardProps) => {
+export const Dashboard = ({ username }: DashboardProps) => {
+  const { data, loading } = useTasksQuery();
+  const tasks = useMemo(() => data?.tasks ?? [], [data?.tasks]);
+  if (loading)
+    return (
+      <Center h="100%">
+        <Spinner size="xl" thickness="4px" speed="0.8s" />
+      </Center>
+    );
   return (
     <Grid h="100%" templateRows="auto 1fr" gap={4}>
       <GridItem rowSpan={1} as={HStack} justifyContent="space-between">
