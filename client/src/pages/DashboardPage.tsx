@@ -12,7 +12,7 @@ export const DashboardPage = () => {
     );
   return data ? (
     <>
-      <Dashboard username={data.me.username} tasks={data.me.tasks} />
+      <Dashboard username={data.me.username} />
       <CreateTaskModal />
     </>
   ) : (
