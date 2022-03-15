@@ -132,6 +132,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
     resetCodeEmail: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
+    tasks: NexusGenRootTypes['Task'][]; // [Task!]!
     verificationEmail: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
     verify: NexusGenRootTypes['SuccessMessage']; // SuccessMessage!
   }
@@ -181,6 +182,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     me: 'User'
     resetCodeEmail: 'SuccessMessage'
+    tasks: 'Task'
     verificationEmail: 'SuccessMessage'
     verify: 'SuccessMessage'
   }

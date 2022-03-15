@@ -45,6 +45,7 @@ scalar Password
 type Query {
   me: User!
   resetCodeEmail(email: String!): SuccessMessage!
+  tasks: [Task!]!
   verificationEmail(email: String!): SuccessMessage!
   verify(id: String!, verificationCode: String!): SuccessMessage!
 }

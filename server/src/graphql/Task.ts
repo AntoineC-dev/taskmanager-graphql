@@ -20,6 +20,19 @@ export const TaskModel = objectType({
   },
 });
 
+export const TaskQuery = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.list.nonNull.field("tasks", {
+      type: "Task",
+      resolve(_, __, ctx) {
+        const { userId } = checkAuthenticated(ctx);
+        return ctx.prisma.task.findMany({ where: { userId } });
+      },
+    });
+  },
+});
+
 export const TaskMutation = extendType({
   type: "Mutation",
   definition(t) {
