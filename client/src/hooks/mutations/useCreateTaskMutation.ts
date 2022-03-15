@@ -1,6 +1,6 @@
 import { MutationHookOptions, useMutation } from "@apollo/client";
 import { CreateTaskData, CREATE_TASK_MUTATION } from "../../graphql";
-import { CORE_TASK_FIELDS } from "../../models";
+import { CORE_TASK_FIELDS, Task } from "../../models";
 import { CreateTaskInput } from "../../validators";
 
 export function useCreateTaskMutation(options?: Omit<MutationHookOptions<CreateTaskData, CreateTaskInput>, "update">) {
@@ -8,7 +8,7 @@ export function useCreateTaskMutation(options?: Omit<MutationHookOptions<CreateT
     update(cache, { data }) {
       cache.modify({
         fields: {
-          tasks(existingTasks = []) {
+          tasks(existingTasks: Task[] = []) {
             const newTaskRef = cache.writeFragment({
               data: data?.createTask,
               fragment: CORE_TASK_FIELDS,
