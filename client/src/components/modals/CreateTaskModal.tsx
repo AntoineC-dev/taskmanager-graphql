@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -13,7 +12,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useCreateTaskMutation, useResolverForm } from "../../hooks";
-import { CORE_TASK_FIELDS } from "../../models";
 import { CreateTaskInput, createTaskSchema } from "../../validators";
 import { HookFormInput } from "../HookFormInput";
 
@@ -27,24 +25,11 @@ export const CreateTaskModal = () => {
     reset();
     onClose();
   };
-  const [create] = useCreateTaskMutation({
-    update(cache, { data }) {
-      cache.modify({
-        fields: {
-          tasks(existingTasks = []) {
-            const newTaskRef = cache.writeFragment({
-              data: data?.createTask,
-              fragment: CORE_TASK_FIELDS,
-            });
-            return [...existingTasks, newTaskRef];
-          },
-        },
-      });
-    },
+  const [createTask] = useCreateTaskMutation({
     onCompleted: (_) => onCloseReset(),
     onError: (_) => onCloseReset(),
   });
-  const onSubmit = (variables: CreateTaskInput) => create({ variables });
+  const onSubmit = (variables: CreateTaskInput) => createTask({ variables });
   return (
     <>
       <IconButton
