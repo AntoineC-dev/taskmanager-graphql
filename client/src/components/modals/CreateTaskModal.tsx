@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -10,10 +11,9 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
-import { ME_QUERY } from "../../graphql";
 import { useCreateTaskMutation, useResolverForm } from "../../hooks";
+import { CORE_TASK_FIELDS } from "../../models";
 import { CreateTaskInput, createTaskSchema } from "../../validators";
 import { HookFormInput } from "../HookFormInput";
 
@@ -27,13 +27,21 @@ export const CreateTaskModal = () => {
     reset();
     onClose();
   };
-  const toast = useToast();
   const [create] = useCreateTaskMutation({
-    refetchQueries: [ME_QUERY],
-    onCompleted: ({ createTask }) => {
-      toast({ ...createTask, status: "success", isClosable: true });
-      onCloseReset();
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          tasks(existingTasks = []) {
+            const newTaskRef = cache.writeFragment({
+              data: data?.createTask,
+              fragment: CORE_TASK_FIELDS,
+            });
+            return [...existingTasks, newTaskRef];
+          },
+        },
+      });
     },
+    onCompleted: (_) => onCloseReset(),
     onError: (_) => onCloseReset(),
   });
   const onSubmit = (variables: CreateTaskInput) => create({ variables });
