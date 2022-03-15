@@ -13,25 +13,25 @@ export const CREATE_TASK_MUTATION = gql`
 `;
 
 // TOGGLE_TASK_MUTATION
-export type ToggleTaskData = { toggleTask: SuccessMessage };
+export type ToggleTaskData = { toggleTask: Task };
 export type ToggleTaskVariables = { id: string };
 export const TOGGLE_TASK_MUTATION = gql`
+  ${CORE_TASK_FIELDS}
   mutation ($id: String!) {
     toggleTask(id: $id) {
-      title
-      description
+      ...CoreTaskFields
     }
   }
 `;
 
 // UPDATE_TASK_MUTATION
-export type UpdateTaskData = { updateTask: SuccessMessage };
+export type UpdateTaskData = { updateTask: Task };
 export type UpdateTaskVariables = { id: string; title: string };
 export const UPDATE_TASK_MUTATION = gql`
+  ${CORE_TASK_FIELDS}
   mutation ($id: String!, $title: NonEmptyString!) {
     updateTask(id: $id, title: $title) {
-      title
-      description
+      ...CoreTaskFields
     }
   }
 `;
