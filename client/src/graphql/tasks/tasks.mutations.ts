@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { CORE_TASK_FIELDS, SuccessMessage, Task } from "../../models";
+import { CORE_TASK_FIELDS, Task } from "../../models";
 
 // CREATE_TASK_MUTATION
 export type CreateTaskData = { createTask: Task };
@@ -37,13 +37,13 @@ export const UPDATE_TASK_MUTATION = gql`
 `;
 
 // DELETE_TASK_MUTATION
-export type DeleteTaskData = { deleteTask: SuccessMessage };
+export type DeleteTaskData = { deleteTask: Task };
 export type DeleteTaskVariables = { id: string };
 export const DELETE_TASK_MUTATION = gql`
+  ${CORE_TASK_FIELDS}
   mutation ($id: String!) {
     deleteTask(id: $id) {
-      title
-      description
+      ...CoreTaskFields
     }
   }
 `;
